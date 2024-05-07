@@ -1,5 +1,9 @@
+import { RouterProvider } from "react-router-dom";
+
 import { render } from "preact";
 
-import Routes from "./routes/index.tsx";
+import routes from "./routes/index.tsx";
 
-render(<Routes />, document.getElementById("app")!);
+import "./globals.css";
+
+render(<RouterProvider router={routes} />, document.getElementById("app")!);

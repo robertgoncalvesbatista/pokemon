@@ -37,7 +37,3 @@ Este projeto foi desenvolvido com amor por um fã dedicado aos Pokémon. Para ma
 - PokéAPI por fornecer os dados essenciais para este projeto.
 - A comunidade Pokémon por inspirar e apoiar este projeto.
 - Todos os contribuidores que ajudaram a tornar este projeto melhor.
-
-## Licença
-
-Este projeto é licenciado sob a [MIT License](LICENSE).

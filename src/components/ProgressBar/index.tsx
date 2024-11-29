@@ -1,3 +1,5 @@
+"use client";
+
 import { TypeStatus } from "../../enums/TypeStatus";
 
 import {
@@ -14,7 +16,7 @@ interface IProps {
   max: number;
 }
 
-export default function ProgressBar({ name, value, max }: IProps) {
+function ProgressBar({ name, value, max }: IProps) {
   // @ts-ignore
   const status = TypeStatus[name];
   const percentage = (value * 100) / max;
@@ -31,3 +33,5 @@ export default function ProgressBar({ name, value, max }: IProps) {
     </ContainerProgreesBar>
   );
 }
+
+export default ProgressBar;

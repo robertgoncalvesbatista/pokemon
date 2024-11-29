@@ -1,3 +1,5 @@
+"use client";
+
 import { styled } from "@stitches/react";
 
 export const ContainerProgreesBar = styled("div", {

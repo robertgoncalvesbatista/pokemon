@@ -1,4 +1,16 @@
+"use client";
+
 import { styled } from "@stitches/react";
+
+export const ButtonShiny = styled("button", {
+  background: "none",
+  border: "none",
+  color: "white",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  gap: "4px",
+});
 
 export const NavbarDashboard = styled("nav", {
   color: "#212529",
@@ -46,7 +58,7 @@ export const Chip = styled("div", {
 });
 
 export const ChipText = styled("span", {
-  backgroundColor: "#ffffff30",
+  border: "1px solid white",
 
   borderRadius: "25px",
   padding: "0.2rem 0.6rem",

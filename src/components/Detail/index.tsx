@@ -1,3 +1,5 @@
+"use client";
+
 interface DetailProps {
   type: string;
   value: string;

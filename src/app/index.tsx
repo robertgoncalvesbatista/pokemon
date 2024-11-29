@@ -1,22 +1,21 @@
-import { useCallback, useEffect, useState } from "react";
-import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
+"use client";
 
-import { AxiosError, AxiosResponse } from "axios";
+import { useState } from "react";
+import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
+import { FaToggleOff, FaToggleOn } from "react-icons/fa";
 
 import ProgressBar from "../components/ProgressBar";
 import Detail from "../components/Detail";
 
-import { TPokemon, TPokemonList } from "../types/TPokemon";
-import { TRow } from "../types/TRow";
-import { TPokemonSpecie } from "../types/TPokemonSpecie";
-import { TEvolutionChain, TEvolvesTo } from "../types/TEvolutionChain";
+import { TPokemon } from "../types/TPokemon";
 
 import { TypeColor } from "../enums/TypeColor";
 
-import { request } from "../services/api";
+import useGetPokemonList from "../hooks/useGetPokemonList";
 
 import {
   ButtonDashboard,
+  ButtonShiny,
   CardDashboard,
   FlexboxDashboard,
   ImageDashboard,
@@ -32,50 +31,14 @@ import {
   Chip,
 } from "./styles";
 
-export default function App() {
-  const [url, setUrl] = useState("https://pokeapi.co/api/v2/pokemon");
-  const [pokemonList, setPokemonList] = useState<Array<TPokemon>>([]);
+import PokemonSpecie from "./PokemonSpecie";
+
+function App() {
+  const { pokemonList, loading, prevUrl, nextUrl, setLoading, setUrl } =
+    useGetPokemonList();
+
   const [pokemon, setPokemon] = useState<TPokemon>();
-  const [prevUrl, setPrevUrl] = useState("");
-  const [nextUrl, setNextUrl] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleFetchPokemon = useCallback((responseData: TPokemonList) => {
-    setPokemonList([]);
-
-    responseData.results.forEach(async (pokemon: TRow) => {
-      await request({ url: pokemon.url })
-        .then((res: AxiosResponse<TPokemon>) => {
-          setPokemonList((prevState) => [...prevState, res.data]);
-        })
-        .catch((error: AxiosError) => {
-          console.error(error);
-        });
-    });
-  }, []);
-
-  const handleFetchListPokemon = useCallback(async () => {
-    setLoading(true);
-
-    await request({ url: url })
-      .then((res: AxiosResponse) => {
-        setPrevUrl(res.data.previous);
-        setNextUrl(res.data.next);
-
-        handleFetchPokemon(res.data);
-      })
-      .catch((error: AxiosError) => {
-        console.error(error);
-      });
-
-    setInterval(() => {
-      setLoading(false);
-    }, 1000);
-  }, [handleFetchPokemon, url]);
-
-  useEffect(() => {
-    handleFetchListPokemon();
-  }, [handleFetchListPokemon]);
+  const [isShiny, setIsShiny] = useState<boolean>(false);
 
   if (loading) {
     return (
@@ -83,27 +46,20 @@ export default function App() {
         <div
           style={{
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
             height: "100vh",
           }}
         >
-          <div
+          <h1
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              fontFamily: "Pixelify Sans, sans-serif",
+              fontStyle: "normal",
             }}
           >
-            <h1
-              style={{
-                fontFamily: "Pixelify Sans, sans-serif",
-                fontStyle: "normal",
-              }}
-            >
-              Carregando...
-            </h1>
-          </div>
+            Carregando...
+          </h1>
         </div>
       </MainDashboard>
     );
@@ -145,7 +101,11 @@ export default function App() {
           >
             <img
               title={pokemon.name}
-              src={pokemon.sprites.other["official-artwork"].front_default}
+              src={
+                pokemon.sprites.other["official-artwork"][
+                  isShiny ? "front_shiny" : "front_default"
+                ]
+              }
               alt={pokemon.name}
               style={{ maxWidth: "200px" }}
             />
@@ -166,6 +126,15 @@ export default function App() {
                   </Chip>
                 );
               })}
+
+              <ButtonShiny
+                onClick={() => setIsShiny((prev) => !prev)}
+                style={{ marginTop: "1rem" }}
+                title={`${pokemon.name} shiny`}
+              >
+                {isShiny ? <FaToggleOn size={20} /> : <FaToggleOff size={20} />}
+                Shiny
+              </ButtonShiny>
             </div>
           </div>
         </CardPokemon>
@@ -218,10 +187,11 @@ export default function App() {
         style={{
           borderRadius: "8px",
           backgroundColor: "#ef233c",
-          padding: "8px",
+          padding: "16px",
           color: "#fff",
           textAlign: "justify",
           marginTop: "1rem",
+          marginX: "32px",
         }}
       >
         <p>
@@ -296,62 +266,4 @@ export default function App() {
   );
 }
 
-interface PokemonSpecieProps {
-  specie: { name: string; url: string };
-}
-
-function PokemonSpecie({ specie }: PokemonSpecieProps) {
-  const [evolutionChain, setEvolutionChain] = useState<TEvolutionChain>();
-
-  const handleFetchChain = useCallback(
-    async (evolution_chain: Omit<TRow, "name">) => {
-      await request({ url: evolution_chain.url })
-        .then((res: AxiosResponse<TEvolutionChain>) => {
-          setEvolutionChain(res.data);
-        })
-        .catch((error: AxiosError) => {
-          console.error(error);
-        });
-    },
-    []
-  );
-
-  const handleFetchSpecie = useCallback(async () => {
-    await request({ url: specie.url })
-      .then((res: AxiosResponse<TPokemonSpecie>) => {
-        handleFetchChain(res.data.evolution_chain);
-      })
-      .catch((error: AxiosError) => {
-        console.error(error);
-      });
-  }, [handleFetchChain, specie.url]);
-
-  useEffect(() => {
-    handleFetchSpecie();
-  }, [handleFetchSpecie]);
-
-  if (!evolutionChain?.chain.evolves_to) {
-    return <span>Não tem evolução</span>;
-  }
-
-  return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <ul>
-        {evolutionChain?.chain.evolves_to.map((firstEvolution: TEvolvesTo) => {
-          return (
-            <li
-              style={{
-                textTransform: "capitalize",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              {evolutionChain?.chain.species.name} <HiArrowSmRight size={20} />
-              {firstEvolution.species.name}
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-}
+export default App;

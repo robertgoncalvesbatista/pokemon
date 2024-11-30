@@ -2,9 +2,9 @@
 
 import { HiArrowSmRight } from "react-icons/hi";
 
-import { TEvolvesTo } from "../../types/TEvolutionChain";
+import { TEvolvesTo } from "../../../types/TEvolutionChain";
 
-import useGetPokemonSpecie from "../../hooks/useGetPokemonSpecie";
+import useGetPokemonSpecie from "../../../hooks/useGetPokemonSpecie";
 
 interface PokemonSpecieProps {
   specie: { name: string; url: string };

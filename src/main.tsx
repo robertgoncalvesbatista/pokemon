@@ -1,6 +1,6 @@
 import { render } from "preact";
 
-import App from "./app/index.tsx";
+import App from "./App";
 
 import "./globals.css";
 

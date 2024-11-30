@@ -22,6 +22,10 @@ export type TPokemon = {
       ability: TRow;
     }
   ];
+  cries: {
+    latest: string;
+    legacy: string;
+  };
   forms: Array<TRow>;
   game_indices: [
     {

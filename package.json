@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@stitches/react": "^1.2.8",
+    "axios": "^1.7.8",
     "preact": "^10.19.6",
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.23.0"

@@ -2,16 +2,23 @@ import { useCallback, useMemo } from "preact/hooks";
 
 import { RoutesProvider, useRoutes } from "../hooks/useRoutes";
 
+import Main from "../pages/Main";
 import PokemonList from "../pages/PokemonList";
 import PokemonDetails from "../pages/PokemonDetails";
 
-export type Page = "home" | "about" | "contact"; // Define as páginas disponíveis
+export type Page = "main" | "home" | "about"; // Define as páginas disponíveis
 
 function Routes() {
   const { currentPage, setCurrentPage } = useRoutes();
 
   const browserRoutes = useMemo(() => {
     return [
+      {
+        name: "main",
+        component: () => {
+          return <Main setCurrentPage={setCurrentPage} />;
+        },
+      },
       {
         name: "home",
         component: () => {
@@ -37,7 +44,7 @@ function Routes() {
         return foundRoute.component();
       }
 
-      return <PokemonList setCurrentPage={setCurrentPage} />;
+      return <Main setCurrentPage={setCurrentPage} />;
     },
     [currentPage, setCurrentPage]
   );

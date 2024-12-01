@@ -15,20 +15,19 @@ import { TypeColor } from "../../enums/TypeColor";
 
 import { useRoutes } from "../../hooks/useRoutes";
 
-import {
-  ButtonShiny,
-  AboutPokemon,
-  CardPokemon,
-  ContentPokemon,
-  MainPokemon,
-  StatusPokemon,
-  ChipText,
-  Chip,
-} from "./styles";
-
 import { Page } from "../../App";
 
+import {
+  ButtonShiny,
+  AboutStyled,
+  CardStyled,
+  ContentStyled,
+  MainStyled,
+  StatusStyled,
+} from "./styles";
+
 import PokemonSpecie from "./PokemonSpecie";
+import Chip from "../../components/Chip";
 
 interface PokemonDetailsProps {
   setCurrentPage: React.Dispatch<StateUpdater<Page>>;
@@ -47,8 +46,8 @@ function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
   }
 
   return (
-    <MainPokemon>
-      <CardPokemon css={{ $$bgColor: color }}>
+    <MainStyled>
+      <CardStyled css={{ $$bgColor: color }}>
         <button
           style={{
             color: "#fff",
@@ -95,11 +94,7 @@ function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
             </div>
 
             {pokemon.types.map((item) => {
-              return (
-                <Chip key={item.type.name}>
-                  <ChipText>{item.type.name}</ChipText>
-                </Chip>
-              );
+              return <Chip key={item.type.name}>{item.type.name}</Chip>;
             })}
 
             <ButtonShiny
@@ -115,10 +110,10 @@ function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
             <AudioButton link={pokemon.cries.legacy} label={"Legacy"} />
           </div>
         </div>
-      </CardPokemon>
+      </CardStyled>
 
-      <ContentPokemon>
-        <AboutPokemon>
+      <ContentStyled>
+        <AboutStyled>
           <Detail type={"hg"} value={pokemon.height} name={"Height"} />
           <Detail type={"dm"} value={pokemon.weight} name={"Weight"} />
           <Detail
@@ -126,11 +121,11 @@ function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
             value={pokemon.base_experience}
             name={"Base experience"}
           />
-        </AboutPokemon>
-      </ContentPokemon>
+        </AboutStyled>
+      </ContentStyled>
 
-      <ContentPokemon>
-        <StatusPokemon>
+      <ContentStyled>
+        <StatusStyled>
           <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>
             Base status
           </h2>
@@ -145,17 +140,17 @@ function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
               />
             );
           })}
-        </StatusPokemon>
-      </ContentPokemon>
+        </StatusStyled>
+      </ContentStyled>
 
-      <ContentPokemon>
+      <ContentStyled>
         <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>
           Evolution Chain
         </h2>
 
         <PokemonSpecie specie={pokemon.species} />
-      </ContentPokemon>
-    </MainPokemon>
+      </ContentStyled>
+    </MainStyled>
   );
 }
 

@@ -12,28 +12,12 @@ export const ButtonShiny = styled("button", {
   gap: "4px",
 });
 
-export const Chip = styled("div", {
-  marginBottom: "0.5rem",
-});
-
-export const ChipText = styled("span", {
-  border: "1px solid white",
-
-  borderRadius: "25px",
-  padding: "0.2rem 0.6rem",
-
-  fontSize: "10pt",
-  fontWeight: 400,
-
-  textTransform: "capitalize",
-});
-
-export const MainPokemon = styled("main", {
+export const MainStyled = styled("main", {
   width: "100vw",
   height: "100vh",
 });
 
-export const CardPokemon = styled("div", {
+export const CardStyled = styled("div", {
   maxWidth: "1200px",
 
   margin: "0 auto",
@@ -46,7 +30,7 @@ export const CardPokemon = styled("div", {
   borderBottomRightRadius: "50px",
 });
 
-export const ContentPokemon = styled("div", {
+export const ContentStyled = styled("div", {
   maxWidth: "1200px",
 
   padding: "0 2rem",
@@ -55,13 +39,13 @@ export const ContentPokemon = styled("div", {
   display: "grid",
 });
 
-export const AboutPokemon = styled("div", {
+export const AboutStyled = styled("div", {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-evenly",
 });
 
-export const StatusPokemon = styled("div", {
+export const StatusStyled = styled("div", {
   maxWidth: "800px",
   width: "100%",
   margin: "0 auto",

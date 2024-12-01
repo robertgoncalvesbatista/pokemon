@@ -22,8 +22,6 @@ function useGetPokemonList() {
   const handleFetchPokemon = useCallback((responseData: TPokemonList) => {
     setPokemonList([]);
 
-    console.log(responseData);
-
     responseData.results.forEach(async (pokemon: TRow) => {
       // Verifica se a resposta já está no cache
       const cache = await caches.open("pokemon");
@@ -31,7 +29,6 @@ function useGetPokemonList() {
 
       if (cachedResponse) {
         // Se a resposta estiver no cache, retorna a resposta armazenada
-        console.log("Usando resposta do cache");
         cachedResponse
           .json()
           .then((response: AxiosResponse<TPokemon>) => {
@@ -90,14 +87,11 @@ function useGetPokemonList() {
 
     if (cachedResponse) {
       // Se a resposta estiver no cache, retorna a resposta armazenada
-      console.log("Usando resposta do cache");
       cachedResponse
         .json()
         .then(async (response: AxiosResponse) => {
           setPrevUrl(response.data?.previous);
           setNextUrl(response.data?.next);
-
-          console.log(response);
 
           handleFetchPokemon(response.data);
         })

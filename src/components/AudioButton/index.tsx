@@ -8,6 +8,9 @@ function AudioButton({ link, label }: { link: string; label: string }) {
 
   const handlePlayPause = useCallback(() => {
     if (audioRef.current) {
+      // @ts-ignore
+      audioRef.current.volume = 0.5;
+
       if (isPlaying) {
         // @ts-ignore
         audioRef.current.pause();

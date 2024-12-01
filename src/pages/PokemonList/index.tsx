@@ -1,8 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
 
-import { StateUpdater, useState } from "preact/hooks";
+import { StateUpdater } from "preact/hooks";
+
+import Chip from "../../components/Chip";
+import IconButton from "../../components/IconButton";
 
 import { TPokemon } from "../../types/TPokemon";
 
@@ -11,17 +15,7 @@ import { TypeColor } from "../../enums/TypeColor";
 import useGetPokemonList from "../../hooks/useGetPokemonList";
 import { useRoutes } from "../../hooks/useRoutes";
 
-import {
-  ButtonDashboard,
-  CardDashboard,
-  FlexboxDashboard,
-  ImageDashboard,
-  NavbarDashboard,
-  TooltipDashboard,
-  ChipText,
-  Chip,
-  MainDashboard,
-} from "./styles";
+import { Flexbox, Image, Title, ButtonGroup, Main, Card } from "./styles";
 
 import { Page } from "../../App";
 
@@ -38,94 +32,67 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
     useGetPokemonList();
 
   return (
-    <MainDashboard>
-      <div
-        style={{
-          borderRadius: "8px",
-          backgroundColor: "#ef233c",
-          padding: "16px",
-          color: "#fff",
-          textAlign: "justify",
-          marginTop: "1rem",
-          marginX: "32px",
-        }}
-      >
-        <p>
-          Este site é o meu projeto de fã. Nele, compartilho meu entusiasmo e a
-          criação de uma Pokédex completa. Sinta-se bem-vindo para explorar e
-          mergulhar no vasto universo de Pokémon que tanto me inspira. Pokémon e
-          seus personagens são marcas comerciais da Nintendo.
-        </p>
-      </div>
+    <Main>
+      <Title>Pokédex</Title>
 
-      <NavbarDashboard>
-        <h1>Pokédex</h1>
-      </NavbarDashboard>
-
-      <FlexboxDashboard>
-        {pokemonList.map((value: TPokemon) => {
+      <Flexbox>
+        {pokemonList.map((pokemon: TPokemon) => {
           // @ts-ignore
-          const color = TypeColor[value.types[0].type.name];
+          const color = TypeColor[pokemon.types[0].type.name];
 
           return (
-            <CardDashboard
-              key={value.id}
+            <Card
+              key={pokemon.id}
               css={{ $$bgColor: color }}
               onClick={() => {
-                setPokemon(value);
+                setPokemon(pokemon);
                 setCurrentPage("about");
               }}
             >
               <div style={{ textTransform: "capitalize", color: "white" }}>
-                <h4 style={{ marginBottom: "1rem" }}>{value.name}</h4>
+                <h4 style={{ marginBottom: "1rem" }}>{pokemon.name}</h4>
 
-                {value.types.map((item) => {
-                  return (
-                    <Chip key={item.type.name}>
-                      <ChipText>{item.type.name}</ChipText>
-                    </Chip>
-                  );
+                {pokemon.types.map((item) => {
+                  return <Chip key={item.type.name}>{item.type.name}</Chip>;
                 })}
               </div>
 
               <div>
                 <i className="logo"></i>
 
-                <ImageDashboard
+                <Image
                   loading="eager"
-                  title={value.name}
-                  src={value.sprites.other["official-artwork"].front_default}
+                  title={pokemon.name}
+                  src={pokemon.sprites.other["official-artwork"].front_default}
                   width="96"
                   height="96"
                 />
               </div>
-            </CardDashboard>
+            </Card>
           );
         })}
-      </FlexboxDashboard>
+      </Flexbox>
 
-      <TooltipDashboard>
-        <ButtonDashboard
+      <ButtonGroup>
+        <IconButton
+          icon={HiArrowSmLeft}
+          disabled={!prevUrl}
           onClick={() => {
             handleChangePage(page - 1);
             setPage((prev) => prev - 1);
           }}
-          disabled={!prevUrl}
-        >
-          <HiArrowSmLeft size={20} />
-        </ButtonDashboard>
+        />
 
-        <ButtonDashboard
+        <IconButton
+          icon={HiArrowSmRight}
+          disabled={!nextUrl}
           onClick={() => {
             handleChangePage(page + 1);
             setPage((prev) => prev + 1);
           }}
-          disabled={!nextUrl}
-        >
-          <HiArrowSmRight size={20} />
-        </ButtonDashboard>
-      </TooltipDashboard>
-    </MainDashboard>
+        />
+      </ButtonGroup>
+    </Main>
   );
 }
 

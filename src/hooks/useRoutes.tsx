@@ -1,7 +1,14 @@
-import React, { createContext, useState, useContext, useMemo } from "react";
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useMemo,
+  PropsWithChildren,
+} from "react";
+
 import { TPokemon } from "../types/TPokemon";
 
-export type Page = "home" | "about" | "contact"; // Define as páginas disponíveis
+import { Page } from "../App";
 
 interface RoutesContextData {
   currentPage: Page;
@@ -11,12 +18,8 @@ interface RoutesContextData {
 }
 const RoutesContext = createContext<RoutesContextData>({} as RoutesContextData);
 
-interface RoutesProviderProps {
-  children: React.ReactElement;
-}
-
-function RoutesProvider({ children }: RoutesProviderProps) {
-  const [currentPage, setCurrentPage] = useState<Page>("home");
+function RoutesProvider({ children }: PropsWithChildren) {
+  const [currentPage, setCurrentPage] = useState<Page>("main");
   const [pokemon, setPokemon] = useState<TPokemon>();
 
   const value = useMemo(() => {

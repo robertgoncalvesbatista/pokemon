@@ -7,27 +7,27 @@ import { FaToggleOff, FaToggleOn } from "react-icons/fa";
 
 import { StateUpdater } from "preact/hooks";
 
-import ProgressBar from "../../components/ProgressBar";
-import Detail from "../../components/Detail";
-import AudioButton from "../../components/AudioButton";
+import ProgressBar from "@/components/ProgressBar";
+import Detail from "@/components/Detail";
+import AudioButton from "@/components/AudioButton";
+import Chip from "@/components/Chip";
 
-import { TypeColor } from "../../enums/TypeColor";
+import { TypeColor } from "@/enums/TypeColor";
 
-import { useRoutes } from "../../hooks/useRoutes";
+import { useRoutes } from "@/hooks/useRoutes";
 
-import { Page } from "../../App";
+import { Page } from "@/App";
 
 import {
   ButtonShiny,
   AboutStyled,
   CardStyled,
   ContentStyled,
-  MainStyled,
+  ScreenStyled,
   StatusStyled,
 } from "./styles";
 
 import PokemonSpecie from "./PokemonSpecie";
-import Chip from "../../components/Chip";
 
 interface PokemonDetailsProps {
   setCurrentPage: React.Dispatch<StateUpdater<Page>>;
@@ -46,7 +46,7 @@ function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
   }
 
   return (
-    <MainStyled>
+    <ScreenStyled>
       <CardStyled css={{ $$bgColor: color }}>
         <button
           style={{
@@ -59,7 +59,7 @@ function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
             cursor: "pointer",
           }}
           type="button"
-          onClick={() => setCurrentPage("home")}
+          onClick={() => setCurrentPage("pokemon-list")}
         >
           <HiArrowSmLeft size={20} />
           Pokédex
@@ -150,7 +150,7 @@ function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
 
         <PokemonSpecie specie={pokemon.species} />
       </ContentStyled>
-    </MainStyled>
+    </ScreenStyled>
   );
 }
 

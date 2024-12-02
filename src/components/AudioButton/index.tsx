@@ -2,7 +2,12 @@ import { useCallback, useRef, useState } from "react";
 
 import { AiFillSound } from "react-icons/ai";
 
-function AudioButton({ link, label }: { link: string; label: string }) {
+interface AudioButtonProps {
+  link: string;
+  label: string;
+}
+
+function AudioButton({ link, label }: AudioButtonProps) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 

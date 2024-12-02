@@ -4,10 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 
 import { AxiosError, AxiosResponse } from "axios";
 
-import { TPokemon, TPokemonList } from "../types/TPokemon";
-import { TRow } from "../types/TRow";
+import { TPokemon, TPokemonList } from "@/types/TPokemon";
+import { TRow } from "@/types/TRow";
 
-import { request } from "../services/api";
+import { request } from "@/services/api";
 
 function useGetPokemonList() {
   const [pokemonList, setPokemonList] = useState<Array<TPokemon>>([]);

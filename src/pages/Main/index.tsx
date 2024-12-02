@@ -2,113 +2,96 @@
 
 import { StateUpdater } from "preact/hooks";
 
-import { Page } from "../../App";
+import Pikachu from "@/assets/img/pikachu.png";
+import Pokeball from "@/assets/img/pokeball-icon.png";
 
-import Pikachu from "../../../public/pikachu.png";
-import Pokeball from "../../../public/pokeball-icon.png";
+import { Page } from "@/App";
 
-import { MainStyled, BotaoStyled } from "./styles";
+import {
+  ScreenStyled,
+  BotaoStyled,
+  ButtonGroupStyled,
+  MainStyled,
+  FooterStyled,
+  WrapperStyled,
+  FooterBody,
+} from "./styles";
 
-interface MainScreenProps {
+interface MainProps {
   setCurrentPage: React.Dispatch<StateUpdater<Page>>;
 }
 
-function MainScreen({ setCurrentPage }: MainScreenProps) {
+function Main({ setCurrentPage }: MainProps) {
   return (
-    <MainStyled style={{ backgroundColor: "#eab646" }}>
-      <div
-        style={{
-          padding: "8rem 0 2rem",
-          display: "grid",
-          gridTemplateColumns: "1fr 2.5fr",
-          alignItems: "center",
-          gap: "1rem",
-          margin: "0 auto",
-          maxWidth: "1200px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "400px",
-            margin: "0 auto",
-          }}
-        >
-          <img
-            src={Pikachu}
-            alt="Pikachu photo"
-            style={{ maxHeight: "148px" }}
-          />
-        </div>
+    <ScreenStyled>
+      <MainStyled>
+        <WrapperStyled>
+          <div style={{ margin: "0 auto" }}>
+            <img
+              src={Pikachu}
+              alt="Pikachu image"
+              style={{ maxHeight: "148px" }}
+            />
+          </div>
 
-        <div style={{ margin: "0 1rem" }}>
-          <p style={{ fontSize: "10pt" }}>
-            Bem-vindo(a) ao maravilhoso mundo de
-          </p>
-          <h1 style={{ fontSize: "42pt" }}>Pokémon</h1>
-          <p>
-            Este site é o meu projeto de fã. Nele, compartilho meu entusiasmo e
-            a criação de uma Pokédex completa. Explore e mergulhe o vasto
-            universo de Pokémon que tanto me inspira.
-          </p>
-        </div>
-      </div>
+          <div>
+            <p style={{ fontSize: "10pt" }}>
+              Bem-vindo(a) ao maravilhoso mundo de
+            </p>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "1rem",
-          borderRadius: "8px",
-          padding: "0.75rem 1rem",
-          margin: "2rem auto 0",
-        }}
-      >
-        <BotaoStyled onClick={() => setCurrentPage("home")}>
-          <img src={Pokeball} alt="" width="32px" />
-          Pokemon
-        </BotaoStyled>
+            <h1 style={{ fontSize: "42pt" }}>Pokémon</h1>
 
-        <BotaoStyled>
-          <img src={Pokeball} alt="" width="32px" />
-          Berries
-        </BotaoStyled>
+            <p style={{ fontSize: "10pt" }}>
+              Este site é o meu projeto de fã. Nele, compartilho meu entusiasmo
+              e a criação de uma Pokédex completa. Explore e mergulhe o vasto
+              universo de Pokémon que tanto me inspira.
+            </p>
+          </div>
+        </WrapperStyled>
 
-        <BotaoStyled>
-          <img src={Pokeball} alt="" width="32px" />
-          Locations
-        </BotaoStyled>
+        <ButtonGroupStyled>
+          <BotaoStyled onClick={() => setCurrentPage("pokemon-list")}>
+            <img src={Pokeball} alt="" width="32px" />
+            Pokemon
+          </BotaoStyled>
 
-        <BotaoStyled>
-          <img src={Pokeball} alt="" width="32px" />
-          Games
-        </BotaoStyled>
+          <BotaoStyled disabled>
+            <img src={Pokeball} alt="" width="32px" />
+            Berries
+          </BotaoStyled>
 
-        <BotaoStyled>
-          <img src={Pokeball} alt="" width="32px" />
-          Machines
-        </BotaoStyled>
+          <BotaoStyled disabled>
+            <img src={Pokeball} alt="" width="32px" />
+            Locations
+          </BotaoStyled>
 
-        <BotaoStyled>
-          <img src={Pokeball} alt="" width="32px" />
-          Moves
-        </BotaoStyled>
-      </div>
+          <BotaoStyled disabled>
+            <img src={Pokeball} alt="" width="32px" />
+            Games
+          </BotaoStyled>
 
-      <div
-        style={{
-          width: "100%",
-          position: "fixed",
-          bottom: 0,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <span>
-          Pokémon e seus personagens são marcas comerciais da Nintendo Co., Ltd
-        </span>
-      </div>
-    </MainStyled>
+          <BotaoStyled disabled>
+            <img src={Pokeball} alt="" width="32px" />
+            Machines
+          </BotaoStyled>
+
+          <BotaoStyled disabled>
+            <img src={Pokeball} alt="" width="32px" />
+            Moves
+          </BotaoStyled>
+        </ButtonGroupStyled>
+      </MainStyled>
+
+      <FooterStyled>
+        <FooterBody>
+          <span>
+            Pokémon e seus personagens são marcas comerciais da Nintendo Co.,
+            Ltd
+          </span>
+        </FooterBody>
+      </FooterStyled>
+    </ScreenStyled>
   );
 }
 
-export default MainScreen;
+export default Main;

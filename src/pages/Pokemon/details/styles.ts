@@ -12,7 +12,7 @@ export const ButtonShiny = styled("button", {
   gap: "4px",
 });
 
-export const MainStyled = styled("main", {
+export const ScreenStyled = styled("main", {
   width: "100vw",
   height: "100vh",
 });

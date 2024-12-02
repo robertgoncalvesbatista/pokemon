@@ -6,9 +6,9 @@ import React, {
   PropsWithChildren,
 } from "react";
 
-import { TPokemon } from "../types/TPokemon";
+import { TPokemon } from "@/types/TPokemon";
 
-import { Page } from "../App";
+import { Page } from "@/App";
 
 interface RoutesContextData {
   currentPage: Page;

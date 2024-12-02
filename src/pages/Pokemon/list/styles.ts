@@ -2,19 +2,19 @@
 
 import { styled } from "@stitches/react";
 
-export const Main = styled("main", {
+export const ScreenStyled = styled("main", {
   margin: "0 auto",
   marginTop: "2rem",
   maxWidth: "1200px",
 });
 
-export const Title = styled("h1", {
+export const TitleStyled = styled("h1", {
   color: "#212529",
   textAlign: "center",
   marginBottom: "1rem",
 });
 
-export const Flexbox = styled("div", {
+export const FlexboxStyled = styled("div", {
   display: "flex",
   justifyContent: "center",
 
@@ -22,7 +22,7 @@ export const Flexbox = styled("div", {
   flexWrap: "wrap",
 });
 
-export const Card = styled("div", {
+export const CardStyled = styled("div", {
   backgroundColor: "$$bgColor",
 
   display: "grid",
@@ -37,7 +37,7 @@ export const Card = styled("div", {
   cursor: "pointer",
 });
 
-export const ButtonGroup = styled("div", {
+export const ButtonGroupStyled = styled("div", {
   padding: "1rem 0",
 
   display: "flex",
@@ -45,7 +45,7 @@ export const ButtonGroup = styled("div", {
   gap: "1rem",
 });
 
-export const Image = styled("img", {
+export const ImageStyled = styled("img", {
   position: "relative",
 
   transition: ".1s ease-in-out",

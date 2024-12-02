@@ -6,7 +6,7 @@ interface DetailProps {
   name: string;
 }
 
-export default function Detail({ type, value, name }: DetailProps) {
+function Detail({ type, value, name }: DetailProps) {
   return (
     <div style={{ textAlign: "center" }}>
       <span style={{ fontWeight: "500", fontSize: "14pt" }}>
@@ -19,3 +19,5 @@ export default function Detail({ type, value, name }: DetailProps) {
     </div>
   );
 }
+
+export default Detail;

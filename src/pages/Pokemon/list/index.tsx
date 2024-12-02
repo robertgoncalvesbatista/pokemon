@@ -5,19 +5,26 @@ import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
 
 import { StateUpdater } from "preact/hooks";
 
-import Chip from "../../components/Chip";
-import IconButton from "../../components/IconButton";
+import Chip from "@/components/Chip";
+import IconButton from "@/components/IconButton";
 
-import { TPokemon } from "../../types/TPokemon";
+import { TPokemon } from "@/types/TPokemon";
 
-import { TypeColor } from "../../enums/TypeColor";
+import { TypeColor } from "@/enums/TypeColor";
 
-import useGetPokemonList from "../../hooks/useGetPokemonList";
-import { useRoutes } from "../../hooks/useRoutes";
+import useGetPokemonList from "@/hooks/useGetPokemonList";
+import { useRoutes } from "@/hooks/useRoutes";
 
-import { Flexbox, Image, Title, ButtonGroup, Main, Card } from "./styles";
+import {
+  FlexboxStyled,
+  ImageStyled,
+  TitleStyled,
+  ButtonGroupStyled,
+  ScreenStyled,
+  CardStyled,
+} from "./styles";
 
-import { Page } from "../../App";
+import { Page } from "@/App";
 
 interface PokemonListProps {
   setCurrentPage: React.Dispatch<StateUpdater<Page>>;
@@ -32,21 +39,21 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
     useGetPokemonList();
 
   return (
-    <Main>
-      <Title>Pokédex</Title>
+    <ScreenStyled>
+      <TitleStyled>Pokédex</TitleStyled>
 
-      <Flexbox>
+      <FlexboxStyled>
         {pokemonList.map((pokemon: TPokemon) => {
           // @ts-ignore
           const color = TypeColor[pokemon.types[0].type.name];
 
           return (
-            <Card
+            <CardStyled
               key={pokemon.id}
               css={{ $$bgColor: color }}
               onClick={() => {
                 setPokemon(pokemon);
-                setCurrentPage("about");
+                setCurrentPage("pokemon-details");
               }}
             >
               <div style={{ textTransform: "capitalize", color: "white" }}>
@@ -60,7 +67,7 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
               <div>
                 <i className="logo"></i>
 
-                <Image
+                <ImageStyled
                   loading="eager"
                   title={pokemon.name}
                   src={pokemon.sprites.other["official-artwork"].front_default}
@@ -68,12 +75,12 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
                   height="96"
                 />
               </div>
-            </Card>
+            </CardStyled>
           );
         })}
-      </Flexbox>
+      </FlexboxStyled>
 
-      <ButtonGroup>
+      <ButtonGroupStyled>
         <IconButton
           icon={HiArrowSmLeft}
           disabled={!prevUrl}
@@ -91,8 +98,8 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
             setPage((prev) => prev + 1);
           }}
         />
-      </ButtonGroup>
-    </Main>
+      </ButtonGroupStyled>
+    </ScreenStyled>
   );
 }
 

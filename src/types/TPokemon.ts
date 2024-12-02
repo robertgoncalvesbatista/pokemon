@@ -1,4 +1,4 @@
-import { TRow } from "../types/TRow";
+import { TRow } from "./TRow";
 
 export type TPokemonList = {
   count: number;

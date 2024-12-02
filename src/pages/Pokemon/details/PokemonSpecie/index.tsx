@@ -2,9 +2,9 @@
 
 import { HiArrowSmRight } from "react-icons/hi";
 
-import { TEvolvesTo } from "../../../types/TEvolutionChain";
+import { TEvolvesTo } from "@/types/TEvolutionChain";
 
-import useGetPokemonSpecie from "../../../hooks/useGetPokemonSpecie";
+import useGetPokemonSpecie from "@/hooks/useGetPokemonSpecie";
 
 interface PokemonSpecieProps {
   specie: { name: string; url: string };
@@ -14,7 +14,13 @@ function PokemonSpecie({ specie }: PokemonSpecieProps) {
   const { evolutionChain } = useGetPokemonSpecie({ specie });
 
   if (!evolutionChain?.chain.evolves_to) {
-    return <span>Não tem evolução</span>;
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <ul>
+          <span>Não tem evolução</span>
+        </ul>
+      </div>
+    );
   }
 
   return (

@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
-
-import { StateUpdater } from "preact/hooks";
 
 import Chip from "@/components/Chip";
 import IconButton from "@/components/IconButton";
@@ -27,7 +25,7 @@ import {
 import { Page } from "@/App";
 
 interface PokemonListProps {
-  setCurrentPage: React.Dispatch<StateUpdater<Page>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<Page>>;
 }
 
 function PokemonList({ setCurrentPage }: PokemonListProps) {

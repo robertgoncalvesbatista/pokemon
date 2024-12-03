@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { HiArrowSmLeft } from "react-icons/hi";
 import { FaToggleOff, FaToggleOn } from "react-icons/fa";
-
-import { StateUpdater } from "preact/hooks";
 
 import ProgressBar from "@/components/ProgressBar";
 import Detail from "@/components/Detail";
@@ -30,7 +28,7 @@ import {
 import PokemonSpecie from "./PokemonSpecie";
 
 interface PokemonDetailsProps {
-  setCurrentPage: React.Dispatch<StateUpdater<Page>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<Page>>;
 }
 
 function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {

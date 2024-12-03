@@ -1,12 +1,5 @@
 import { TRow } from "./TRow";
 
-export type TPokemonList = {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: Array<TRow>;
-};
-
 export type TPokemon = {
   id: string;
   name: string;

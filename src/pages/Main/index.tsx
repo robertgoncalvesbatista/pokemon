@@ -1,6 +1,6 @@
 "use client";
 
-import { StateUpdater } from "preact/hooks";
+import React from "react";
 
 import Pikachu from "@/assets/img/pikachu.png";
 import Pokeball from "@/assets/img/pokeball-icon.png";
@@ -18,7 +18,7 @@ import {
 } from "./styles";
 
 interface MainProps {
-  setCurrentPage: React.Dispatch<StateUpdater<Page>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<Page>>;
 }
 
 function Main({ setCurrentPage }: MainProps) {
@@ -39,7 +39,16 @@ function Main({ setCurrentPage }: MainProps) {
               Bem-vindo(a) ao maravilhoso mundo de
             </p>
 
-            <h1 style={{ fontSize: "42pt" }}>Pokémon</h1>
+            <h1
+              style={{
+                fontSize: "42pt",
+                color: "#fff",
+                textShadow:
+                  "2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000",
+              }}
+            >
+              Pokémon
+            </h1>
 
             <p style={{ fontSize: "10pt" }}>
               Este site é o meu projeto de fã. Nele, compartilho meu entusiasmo
@@ -55,7 +64,7 @@ function Main({ setCurrentPage }: MainProps) {
             Pokemon
           </BotaoStyled>
 
-          <BotaoStyled disabled>
+          <BotaoStyled onClick={() => setCurrentPage("berry-list")}>
             <img src={Pokeball} alt="" width="32px" />
             Berries
           </BotaoStyled>

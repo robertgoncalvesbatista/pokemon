@@ -4,36 +4,36 @@ import { useCallback, useEffect, useState } from "react";
 
 import { AxiosError, AxiosResponse } from "axios";
 
-import { TPokemon } from "@/types/TPokemon";
+import { TBerry } from "@/types/TBerry";
 import { TRow } from "@/types/TRow";
 import { TResponseList } from "@/types/TResponseList";
 
 import { request } from "@/services/api";
 
-function useGetPokemonList() {
-  const [pokemonList, setPokemonList] = useState<Array<TPokemon>>([]);
-  const [url, setUrl] = useState<string>("/pokemon?offset=0&limit=20");
+function useGetBerryList() {
+  const [berryList, setBerryList] = useState<Array<TBerry>>([]);
+  const [url, setUrl] = useState<string>("/berry?offset=0&limit=20");
   const [prevUrl, setPrevUrl] = useState<string>("");
   const [nextUrl, setNextUrl] = useState<string>("");
 
   const handleChangePage = useCallback((page: number = 1) => {
-    setUrl(() => `/pokemon?offset=${page * 20 - 20}&limit=20`);
+    setUrl(() => `/berry?offset=${page * 20 - 20}&limit=20`);
   }, []);
 
-  const handleFetchPokemon = useCallback((responseData: TResponseList) => {
-    setPokemonList([]);
+  const handleFetchBerry = useCallback((responseData: TResponseList) => {
+    setBerryList([]);
 
-    responseData.results.forEach(async (pokemon: TRow) => {
+    responseData.results.forEach(async (berry: TRow) => {
       // Verifica se a resposta já está no cache
-      const cache = await caches.open("pokemon");
-      const cachedResponse = await cache.match(pokemon.url);
+      const cache = await caches.open("berry");
+      const cachedResponse = await cache.match(berry.url);
 
       if (cachedResponse) {
         // Se a resposta estiver no cache, retorna a resposta armazenada
         cachedResponse
           .json()
-          .then((response: AxiosResponse<TPokemon>) => {
-            setPokemonList((prevState) => {
+          .then((response: AxiosResponse<TBerry>) => {
+            setBerryList((prevState) => {
               const data = [...prevState, response.data];
 
               const sorted = data.sort((a, b) => {
@@ -53,9 +53,9 @@ function useGetPokemonList() {
             console.error(error);
           });
       } else {
-        await request({ url: pokemon.url })
-          .then((response: AxiosResponse<TPokemon>) => {
-            setPokemonList((prevState) => {
+        await request({ url: berry.url })
+          .then((response: AxiosResponse<TBerry>) => {
+            setBerryList((prevState) => {
               const data = [...prevState, response.data];
 
               const sorted = data.sort((a, b) => {
@@ -72,7 +72,7 @@ function useGetPokemonList() {
             });
 
             // Armazena a resposta no cache
-            cache.put(pokemon.url, new Response(JSON.stringify(response)));
+            cache.put(berry.url, new Response(JSON.stringify(response)));
           })
           .catch((error: AxiosError) => {
             console.error(error);
@@ -81,9 +81,9 @@ function useGetPokemonList() {
     });
   }, []);
 
-  const handleFetchListPokemon = useCallback(async () => {
+  const handleFetchListBerry = useCallback(async () => {
     // Verifica se a resposta já está no cache
-    const cache = await caches.open("pokemon");
+    const cache = await caches.open("berry");
     const cachedResponse = await cache.match(url);
 
     if (cachedResponse) {
@@ -94,7 +94,7 @@ function useGetPokemonList() {
           setPrevUrl(response.data?.previous);
           setNextUrl(response.data?.next);
 
-          handleFetchPokemon(response.data);
+          handleFetchBerry(response.data);
         })
         .catch((error: AxiosError) => {
           console.error(error);
@@ -106,7 +106,7 @@ function useGetPokemonList() {
           setPrevUrl(response.data.previous);
           setNextUrl(response.data.next);
 
-          handleFetchPokemon(response.data);
+          handleFetchBerry(response.data);
 
           // Armazena a resposta no cache
           cache.put(url, new Response(JSON.stringify(response)));
@@ -115,13 +115,13 @@ function useGetPokemonList() {
           console.error(error);
         });
     }
-  }, [handleFetchPokemon, url]);
+  }, [handleFetchBerry, url]);
 
   useEffect(() => {
-    handleFetchListPokemon();
-  }, [handleFetchListPokemon]);
+    handleFetchListBerry();
+  }, [handleFetchListBerry]);
 
-  return { pokemonList, prevUrl, nextUrl, handleChangePage };
+  return { berryList, prevUrl, nextUrl, handleChangePage };
 }
 
-export default useGetPokemonList;
+export default useGetBerryList;

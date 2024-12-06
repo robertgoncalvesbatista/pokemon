@@ -56,19 +56,14 @@ export const BotaoStyled = styled("button", {
 });
 
 export const ButtonGroupStyled = styled("div", {
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr 1fr",
+  display: "flex",
+  justifyContent: "center",
   gap: "1rem",
 
   borderRadius: "8px",
 
   padding: "0.75rem 0",
   margin: "2rem auto 0",
-
-  "@media (min-width: 600px)": {
-    display: "flex",
-    justifyContent: "space-between",
-  },
 });
 
 export const MainStyled = styled("div", {

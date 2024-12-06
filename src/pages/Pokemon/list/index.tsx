@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
+import { HiArrowSmLeft, HiArrowSmRight, HiHome } from "react-icons/hi";
 
 import Chip from "@/components/Chip";
 import IconButton from "@/components/IconButton";
@@ -22,10 +22,8 @@ import {
   CardStyled,
 } from "./styles";
 
-import { Page } from "@/App";
-
 interface PokemonListProps {
-  setCurrentPage: React.Dispatch<React.SetStateAction<Page>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function PokemonList({ setCurrentPage }: PokemonListProps) {
@@ -38,7 +36,28 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
 
   return (
     <ScreenStyled>
-      <TitleStyled>Pokédex</TitleStyled>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-evenly",
+          marginBottom: "1rem",
+        }}
+      >
+        <IconButton
+          icon={HiHome}
+          onClick={() => setCurrentPage("main")}
+          style={{
+            borderRadius: 0,
+            color: "#000",
+            backgroundColor: "#fff",
+          }}
+        />
+
+        <TitleStyled>Pokémon</TitleStyled>
+
+        <div style={{ content: "", width: "40px", height: "40px" }}></div>
+      </div>
 
       <FlexboxStyled>
         {pokemonList.map((pokemon: TPokemon) => {
@@ -58,7 +77,11 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
                 <h4 style={{ marginBottom: "1rem" }}>{pokemon.name}</h4>
 
                 {pokemon.types.map((item) => {
-                  return <Chip key={item.type.name}>{item.type.name}</Chip>;
+                  return (
+                    <Chip color="#fff" key={item.type.name}>
+                      {item.type.name}
+                    </Chip>
+                  );
                 })}
               </div>
 

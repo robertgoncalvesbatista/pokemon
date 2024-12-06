@@ -4,23 +4,29 @@ import React, {
   useContext,
   useMemo,
   PropsWithChildren,
+  useEffect,
 } from "react";
 
 import { TPokemon } from "@/types/TPokemon";
 
-import { Page } from "@/App";
-
 interface RoutesContextData {
-  currentPage: Page;
-  setCurrentPage: React.Dispatch<React.SetStateAction<Page>>;
+  currentPage: string;
+  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
   pokemon: TPokemon | undefined;
   setPokemon: React.Dispatch<React.SetStateAction<TPokemon | undefined>>;
 }
 const RoutesContext = createContext<RoutesContextData>({} as RoutesContextData);
 
 function RoutesProvider({ children }: PropsWithChildren) {
-  const [currentPage, setCurrentPage] = useState<Page>("main");
   const [pokemon, setPokemon] = useState<TPokemon>();
+
+  const [currentPage, setCurrentPage] = useState(() => {
+    return sessionStorage.getItem("page") ?? "main";
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem("page", currentPage);
+  }, [currentPage, setCurrentPage]);
 
   const value = useMemo(() => {
     return {

@@ -5,8 +5,6 @@ import React from "react";
 import Pikachu from "@/assets/img/pikachu.png";
 import Pokeball from "@/assets/img/pokeball-icon.png";
 
-import { Page } from "@/App";
-
 import {
   ScreenStyled,
   BotaoStyled,
@@ -18,7 +16,7 @@ import {
 } from "./styles";
 
 interface MainProps {
-  setCurrentPage: React.Dispatch<React.SetStateAction<Page>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function Main({ setCurrentPage }: MainProps) {
@@ -69,24 +67,9 @@ function Main({ setCurrentPage }: MainProps) {
             Berries
           </BotaoStyled>
 
-          <BotaoStyled disabled>
-            <img src={Pokeball} alt="" width="32px" />
-            Locations
-          </BotaoStyled>
-
-          <BotaoStyled disabled>
+          <BotaoStyled onClick={() => setCurrentPage("game-list")}>
             <img src={Pokeball} alt="" width="32px" />
             Games
-          </BotaoStyled>
-
-          <BotaoStyled disabled>
-            <img src={Pokeball} alt="" width="32px" />
-            Machines
-          </BotaoStyled>
-
-          <BotaoStyled disabled>
-            <img src={Pokeball} alt="" width="32px" />
-            Moves
           </BotaoStyled>
         </ButtonGroupStyled>
       </MainStyled>

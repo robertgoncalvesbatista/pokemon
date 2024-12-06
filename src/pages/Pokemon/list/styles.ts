@@ -11,7 +11,6 @@ export const ScreenStyled = styled("main", {
 export const TitleStyled = styled("h1", {
   color: "#212529",
   textAlign: "center",
-  marginBottom: "1rem",
 });
 
 export const FlexboxStyled = styled("div", {

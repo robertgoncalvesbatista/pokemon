@@ -16,6 +16,7 @@ export const Button = styled("button", {
   backgroundColor: "#6c757d",
   color: "#fff",
 
+  cursor: "pointer",
   transition: ".3s",
 
   "&:hover": { backgroundColor: "#adb5bd" },

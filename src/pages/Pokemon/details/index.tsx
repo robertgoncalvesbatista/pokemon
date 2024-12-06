@@ -14,8 +14,6 @@ import { TypeColor } from "@/enums/TypeColor";
 
 import { useRoutes } from "@/hooks/useRoutes";
 
-import { Page } from "@/App";
-
 import {
   ButtonShiny,
   AboutStyled,
@@ -28,7 +26,7 @@ import {
 import PokemonSpecie from "./PokemonSpecie";
 
 interface PokemonDetailsProps {
-  setCurrentPage: React.Dispatch<React.SetStateAction<Page>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {

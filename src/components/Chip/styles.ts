@@ -8,17 +8,28 @@ export const ChipTextStyled = styled("span", {
   variants: {
     variant: {
       outlined: {
-        border: "1px solid #fff",
+        border: "1px solid $$color",
       },
       contained: {
         backgroundColor: "#fff",
-        color: "#000",
       },
     },
   },
 
-  fontSize: "10pt",
+  color: "$$color",
+
+  fontSize: "8pt",
   fontWeight: 400,
+
+  display: "inline-block",
+  /* ou defina um valor específico de largura */
+  maxWidth: "100%",
+  /* impede quebra de linha */
+  whiteSpace: "nowrap",
+  /* oculta o excesso de texto */
+  overflow: "hidden",
+  /* adiciona "..." no final do texto que ultrapassar o limite */
+  textOverflow: "ellipsis",
 
   textTransform: "capitalize",
 

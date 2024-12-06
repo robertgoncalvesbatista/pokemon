@@ -6,8 +6,7 @@ import Main from "@/pages/Main";
 import PokemonList from "@/pages/Pokemon/list";
 import PokemonDetails from "@/pages/Pokemon/details";
 import Berries from "@/pages/Berries";
-
-export type Page = "main" | "pokemon-list" | "pokemon-details" | "berry-list"; // Define as páginas disponíveis
+import Games from "@/pages/Games";
 
 function Routes() {
   const { currentPage, setCurrentPage } = useRoutes();
@@ -38,11 +37,17 @@ function Routes() {
           return <Berries setCurrentPage={setCurrentPage} />;
         },
       },
+      {
+        name: "game-list",
+        component: () => {
+          return <Games setCurrentPage={setCurrentPage} />;
+        },
+      },
     ];
   }, []);
 
   const renderPage = useCallback(
-    (page: Page) => {
+    (page: string) => {
       const foundRoute = browserRoutes.find((route) => {
         return route.name === page;
       });

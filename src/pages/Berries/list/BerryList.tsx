@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 
-import useGetBerryList from "@/hooks/useGetBerryList";
+import { HiArrowSmLeft, HiArrowSmRight, HiHome } from "react-icons/hi";
+
+import IconButton from "@/components/IconButton";
+
+import useGetBerryList from "./useGetBerryList";
 
 import {
   ButtonGroupStyled,
@@ -10,14 +14,12 @@ import {
   FlexboxStyled,
   ScreenStyled,
 } from "./styles";
-import IconButton from "@/components/IconButton";
-import { HiArrowSmLeft, HiArrowSmRight, HiHome } from "react-icons/hi";
 
 interface BerriesProps {
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function Berries({ setCurrentPage }: BerriesProps) {
+function BerryList({ setCurrentPage }: BerriesProps) {
   const [page, setPage] = useState<number>(1);
 
   const { berryList, prevUrl, nextUrl, handleChangePage } = useGetBerryList();
@@ -116,4 +118,4 @@ function Berries({ setCurrentPage }: BerriesProps) {
   );
 }
 
-export default Berries;
+export default BerryList;

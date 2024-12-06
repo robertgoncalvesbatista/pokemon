@@ -57,17 +57,17 @@ function Main({ setCurrentPage }: MainProps) {
         </WrapperStyled>
 
         <ButtonGroupStyled>
-          <BotaoStyled onClick={() => setCurrentPage("pokemon-list")}>
+          <BotaoStyled onClick={() => setCurrentPage("pokemon.list")}>
             <img src={Pokeball} alt="" width="32px" />
             Pokemon
           </BotaoStyled>
 
-          <BotaoStyled onClick={() => setCurrentPage("berry-list")}>
+          <BotaoStyled onClick={() => setCurrentPage("berry.list")}>
             <img src={Pokeball} alt="" width="32px" />
             Berries
           </BotaoStyled>
 
-          <BotaoStyled onClick={() => setCurrentPage("game-list")}>
+          <BotaoStyled onClick={() => setCurrentPage("game.list")}>
             <img src={Pokeball} alt="" width="32px" />
             Games
           </BotaoStyled>

@@ -4,13 +4,13 @@ import { HiArrowSmRight } from "react-icons/hi";
 
 import { TEvolvesTo } from "@/types/TEvolutionChain";
 
-import useGetPokemonSpecie from "@/hooks/useGetPokemonSpecie";
+import useGetPokemonSpecie from "../services/useGetPokemonSpecie";
 
-interface PokemonSpecieProps {
+interface SpecieProps {
   specie: { name: string; url: string };
 }
 
-function PokemonSpecie({ specie }: PokemonSpecieProps) {
+function Specie({ specie }: SpecieProps) {
   const { evolutionChain } = useGetPokemonSpecie({ specie });
 
   if (!evolutionChain?.chain.evolves_to) {
@@ -45,4 +45,4 @@ function PokemonSpecie({ specie }: PokemonSpecieProps) {
   );
 }
 
-export default PokemonSpecie;
+export default Specie;

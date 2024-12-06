@@ -10,17 +10,18 @@ import { TPokemon } from "@/types/TPokemon";
 
 import { TypeColor } from "@/enums/TypeColor";
 
-import useGetPokemonList from "@/hooks/useGetPokemonList";
 import { useRoutes } from "@/hooks/useRoutes";
+
+import useGetPokemonList from "./services/useGetPokemonList";
 
 import {
   FlexboxStyled,
   ImageStyled,
   TitleStyled,
-  ButtonGroupStyled,
+  ButtonStyled,
   ScreenStyled,
   CardStyled,
-} from "./styles";
+} from "./components/@index";
 
 interface PokemonListProps {
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
@@ -35,7 +36,7 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
     useGetPokemonList();
 
   return (
-    <ScreenStyled>
+    <ScreenStyled.List>
       <div
         style={{
           display: "flex",
@@ -65,12 +66,12 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
           const color = TypeColor[pokemon.types[0].type.name];
 
           return (
-            <CardStyled
+            <CardStyled.List
               key={pokemon.id}
               css={{ $$bgColor: color }}
               onClick={() => {
                 setPokemon(pokemon);
-                setCurrentPage("pokemon-details");
+                setCurrentPage("pokemon.details");
               }}
             >
               <div style={{ textTransform: "capitalize", color: "white" }}>
@@ -96,12 +97,12 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
                   height="96"
                 />
               </div>
-            </CardStyled>
+            </CardStyled.List>
           );
         })}
       </FlexboxStyled>
 
-      <ButtonGroupStyled>
+      <ButtonStyled.Group>
         <IconButton
           icon={HiArrowSmLeft}
           disabled={!prevUrl}
@@ -119,8 +120,8 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
             setPage((prev) => prev + 1);
           }}
         />
-      </ButtonGroupStyled>
-    </ScreenStyled>
+      </ButtonStyled.Group>
+    </ScreenStyled.List>
   );
 }
 

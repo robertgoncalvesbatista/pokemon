@@ -5,7 +5,7 @@ import { HiHome } from "react-icons/hi";
 import IconButton from "@/components/IconButton";
 import Chip from "@/components/Chip";
 
-import useGetGamesList from "@/hooks/useGetGamesList";
+import useGetGamesList from "./useGetGamesList";
 
 import { CardStyled, FlexboxStyled, ScreenStyled } from "./styles";
 
@@ -13,7 +13,7 @@ interface GamesProps {
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function Games({ setCurrentPage }: GamesProps) {
+function GameList({ setCurrentPage }: GamesProps) {
   const { gameList } = useGetGamesList();
 
   return (
@@ -147,4 +147,4 @@ function Games({ setCurrentPage }: GamesProps) {
   );
 }
 
-export default Games;
+export default GameList;

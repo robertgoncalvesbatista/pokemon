@@ -15,15 +15,15 @@ import { TypeColor } from "@/enums/TypeColor";
 import { useRoutes } from "@/hooks/useRoutes";
 
 import {
-  ButtonShiny,
+  ButtonStyled,
   AboutStyled,
   CardStyled,
   ContentStyled,
   ScreenStyled,
   StatusStyled,
-} from "./styles";
+} from "./components/@index";
 
-import PokemonSpecie from "./PokemonSpecie";
+import PokemonSpecie from "./components/specie.component";
 
 interface PokemonDetailsProps {
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
@@ -42,8 +42,8 @@ function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
   }
 
   return (
-    <ScreenStyled>
-      <CardStyled css={{ $$bgColor: color }}>
+    <ScreenStyled.Details>
+      <CardStyled.Details css={{ $$bgColor: color }}>
         <button
           style={{
             color: "#fff",
@@ -55,7 +55,7 @@ function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
             cursor: "pointer",
           }}
           type="button"
-          onClick={() => setCurrentPage("pokemon-list")}
+          onClick={() => setCurrentPage("pokemon.list")}
         >
           <HiArrowSmLeft size={20} />
           Pokédex
@@ -93,20 +93,20 @@ function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
               return <Chip key={item.type.name}>{item.type.name}</Chip>;
             })}
 
-            <ButtonShiny
+            <ButtonStyled.Shiny
               onClick={() => setIsShiny((prev) => !prev)}
               style={{ marginBottom: "1rem", marginTop: "1rem" }}
               title={`${pokemon.name} shiny`}
             >
               {isShiny ? <FaToggleOn size={20} /> : <FaToggleOff size={20} />}
               Shiny
-            </ButtonShiny>
+            </ButtonStyled.Shiny>
 
             <AudioButton link={pokemon.cries.latest} label={"Latest"} />
             <AudioButton link={pokemon.cries.legacy} label={"Legacy"} />
           </div>
         </div>
-      </CardStyled>
+      </CardStyled.Details>
 
       <ContentStyled>
         <AboutStyled>
@@ -146,7 +146,7 @@ function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
 
         <PokemonSpecie specie={pokemon.species} />
       </ContentStyled>
-    </ScreenStyled>
+    </ScreenStyled.Details>
   );
 }
 

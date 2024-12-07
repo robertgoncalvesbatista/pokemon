@@ -19,17 +19,15 @@ import {
   CardStyled,
 } from "./components/@index";
 
-import useGetPokemonList from "./services/useGetPokemonList";
+import useGetPokemonList from "./services/useGetPokemons";
 
 import { Pokemon } from "./domain/Pokemon";
 
-function PokemonList() {
+function ListPage() {
   const navigate = useNavigate();
+  const { pokemons, prevUrl, nextUrl, handleChangePage } = useGetPokemonList();
 
   const [page, setPage] = useState<number>(1);
-
-  const { pokemonList, prevUrl, nextUrl, handleChangePage } =
-    useGetPokemonList();
 
   return (
     <ScreenStyled.List>
@@ -57,7 +55,7 @@ function PokemonList() {
       </div>
 
       <FlexboxStyled>
-        {pokemonList.map((pokemon: Pokemon) => {
+        {pokemons.map((pokemon: Pokemon) => {
           // @ts-ignore
           const color = TypeColor[pokemon.types[0].type.name];
 
@@ -72,10 +70,10 @@ function PokemonList() {
               <div style={{ textTransform: "capitalize", color: "white" }}>
                 <h4 style={{ marginBottom: "1rem" }}>{pokemon.name}</h4>
 
-                {pokemon.types.map((item) => {
+                {pokemon.types.map(({ type }) => {
                   return (
-                    <Chip color="#fff" key={item.type.name}>
-                      {item.type.name}
+                    <Chip color="#fff" key={type.name}>
+                      {type.name}
                     </Chip>
                   );
                 })}
@@ -120,4 +118,4 @@ function PokemonList() {
   );
 }
 
-export default PokemonList;
+export default ListPage;

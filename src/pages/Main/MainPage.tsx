@@ -7,12 +7,10 @@ import Pokeball from "@/assets/img/pokeball-icon.png";
 
 import {
   ScreenStyled,
-  BotaoStyled,
-  ButtonGroupStyled,
+  ButtonStyled,
   MainStyled,
   FooterStyled,
   WrapperStyled,
-  FooterBody,
 } from "./components/@index";
 
 function Main() {
@@ -54,32 +52,32 @@ function Main() {
           </div>
         </WrapperStyled>
 
-        <ButtonGroupStyled>
-          <BotaoStyled onClick={() => navigate("/pokemon")}>
+        <ButtonStyled.Group>
+          <ButtonStyled.Item onClick={() => navigate("/pokemon")}>
             <img src={Pokeball} alt="" width="32px" />
             Pokemon
-          </BotaoStyled>
+          </ButtonStyled.Item>
 
-          <BotaoStyled onClick={() => navigate("/berry")}>
+          <ButtonStyled.Item onClick={() => navigate("/berry")}>
             <img src={Pokeball} alt="" width="32px" />
             Berries
-          </BotaoStyled>
+          </ButtonStyled.Item>
 
-          <BotaoStyled onClick={() => navigate("/game")}>
+          <ButtonStyled.Item onClick={() => navigate("/game")}>
             <img src={Pokeball} alt="" width="32px" />
             Games
-          </BotaoStyled>
-        </ButtonGroupStyled>
+          </ButtonStyled.Item>
+        </ButtonStyled.Group>
       </MainStyled>
 
-      <FooterStyled>
-        <FooterBody>
+      <FooterStyled.Container>
+        <FooterStyled.Body>
           <span>
             Pokémon e seus personagens são marcas comerciais da Nintendo Co.,
             Ltd
           </span>
-        </FooterBody>
-      </FooterStyled>
+        </FooterStyled.Body>
+      </FooterStyled.Container>
     </ScreenStyled>
   );
 }

@@ -7,21 +7,20 @@ import { HiArrowSmLeft, HiArrowSmRight, HiHome } from "react-icons/hi";
 
 import IconButton from "@/components/IconButton";
 
-import useGetBerryList from "./services/useGetBerryList";
+import useGetBerries from "./services/useGetBerries";
 
 import {
-  ButtonGroupStyled,
+  ButtonStyled,
   CardStyled,
   FlexboxStyled,
   ScreenStyled,
 } from "./components/@index";
 
-function BerryList() {
+function ListPage() {
   const navigate = useNavigate();
+  const { berries, prevUrl, nextUrl, handleChangePage } = useGetBerries();
 
   const [page, setPage] = useState<number>(1);
-
-  const { berryList, prevUrl, nextUrl, handleChangePage } = useGetBerryList();
 
   return (
     <ScreenStyled>
@@ -49,7 +48,7 @@ function BerryList() {
       </div>
 
       <FlexboxStyled>
-        {berryList.map((berry) => {
+        {berries.map((berry) => {
           return (
             <CardStyled>
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -94,7 +93,7 @@ function BerryList() {
         })}
       </FlexboxStyled>
 
-      <ButtonGroupStyled>
+      <ButtonStyled.Group>
         <IconButton
           icon={HiArrowSmLeft}
           disabled={!prevUrl}
@@ -112,9 +111,9 @@ function BerryList() {
             setPage((prev) => prev + 1);
           }}
         />
-      </ButtonGroupStyled>
+      </ButtonStyled.Group>
     </ScreenStyled>
   );
 }
 
-export default BerryList;
+export default ListPage;

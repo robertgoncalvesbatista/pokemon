@@ -7,14 +7,13 @@ import { HiHome } from "react-icons/hi";
 import IconButton from "@/components/IconButton";
 import Chip from "@/components/Chip";
 
-import useGetGamesList from "./services/useGetGamesList";
+import useGetGamesList from "./services/useGetGames";
 
 import { CardStyled, FlexboxStyled, ScreenStyled } from "./components/@index";
 
-function GameList() {
+function ListPage() {
   const navigate = useNavigate();
-
-  const { gameList } = useGetGamesList();
+  const { games } = useGetGamesList();
 
   return (
     <ScreenStyled>
@@ -42,7 +41,7 @@ function GameList() {
       </div>
 
       <FlexboxStyled>
-        {gameList.map((game) => {
+        {games.map((game) => {
           return (
             <CardStyled>
               <div style={{ marginBottom: "0.5rem" }}>
@@ -147,4 +146,4 @@ function GameList() {
   );
 }
 
-export default GameList;
+export default ListPage;

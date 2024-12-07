@@ -21,8 +21,8 @@ function sorting(data: any[]) {
   });
 }
 
-function useGetPokemonList() {
-  const [pokemonList, setPokemonList] = useState<Array<Pokemon>>([]);
+function useGetPokemons() {
+  const [pokemons, setPokemons] = useState<Array<Pokemon>>([]);
   const [url, setUrl] = useState<string>("/pokemon?offset=0&limit=20");
   const [prevUrl, setPrevUrl] = useState<string>("");
   const [nextUrl, setNextUrl] = useState<string>("");
@@ -32,13 +32,13 @@ function useGetPokemonList() {
   }, []);
 
   const handleFetchDetails = useCallback((responseData: ResponseList) => {
-    setPokemonList([]);
+    setPokemons([]);
 
     responseData.results.forEach(async (pokemon: Row) => {
       try {
         const result = await requestWithCache(pokemon.url, "pokemon");
 
-        setPokemonList((prevState) => {
+        setPokemons((prevState) => {
           return sorting([...prevState, result]);
         });
       } catch (error) {
@@ -64,7 +64,7 @@ function useGetPokemonList() {
     handleFetchList();
   }, [handleFetchList]);
 
-  return { pokemonList, prevUrl, nextUrl, handleChangePage };
+  return { pokemons, prevUrl, nextUrl, handleChangePage };
 }
 
-export default useGetPokemonList;
+export default useGetPokemons;

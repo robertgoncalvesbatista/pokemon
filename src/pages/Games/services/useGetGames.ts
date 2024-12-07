@@ -4,37 +4,37 @@ import { useCallback, useEffect, useState } from "react";
 
 import { AxiosError, AxiosResponse } from "axios";
 
-import { Berry } from "@/shared/types/Berry";
+import { Game } from "@/shared/types/Game";
 
 import { Row } from "@/shared/interfaces/Row";
 import { ResponseList } from "@/shared/interfaces/ResponseList";
 
 import request from "@/infrastructure/api/request";
 
-function useGetBerryList() {
-  const [berryList, setBerryList] = useState<Array<Berry>>([]);
-  const [url, setUrl] = useState<string>("/berry?offset=0&limit=20");
+function useGetGames() {
+  const [games, setGames] = useState<Array<Game>>([]);
+  const [url, setUrl] = useState<string>("/generation?offset=0&limit=20");
   const [prevUrl, setPrevUrl] = useState<string>("");
   const [nextUrl, setNextUrl] = useState<string>("");
 
   const handleChangePage = useCallback((page: number = 1) => {
-    setUrl(() => `/berry?offset=${page * 20 - 20}&limit=20`);
+    setUrl(() => `/generation?offset=${page * 20 - 20}&limit=20`);
   }, []);
 
-  const handleFetchBerry = useCallback((responseData: ResponseList) => {
-    setBerryList([]);
+  const handleFetchgame = useCallback((responseData: ResponseList) => {
+    setGames([]);
 
-    responseData.results.forEach(async (berry: Row) => {
+    responseData.results.forEach(async (game: Row) => {
       // Verifica se a resposta já está no cache
-      const cache = await caches.open("berry");
-      const cachedResponse = await cache.match(berry.url);
+      const cache = await caches.open("generation");
+      const cachedResponse = await cache.match(game.url);
 
       if (cachedResponse) {
         // Se a resposta estiver no cache, retorna a resposta armazenada
         cachedResponse
           .json()
-          .then((response: AxiosResponse<Berry>) => {
-            setBerryList((prevState) => {
+          .then((response: AxiosResponse<Game>) => {
+            setGames((prevState) => {
               const data = [...prevState, response.data];
 
               const sorted = data.sort((a, b) => {
@@ -54,9 +54,9 @@ function useGetBerryList() {
             console.error(error);
           });
       } else {
-        await request({ url: berry.url })
-          .then((response: AxiosResponse<Berry>) => {
-            setBerryList((prevState) => {
+        await request({ url: game.url })
+          .then((response: AxiosResponse<Game>) => {
+            setGames((prevState) => {
               const data = [...prevState, response.data];
 
               const sorted = data.sort((a, b) => {
@@ -73,7 +73,7 @@ function useGetBerryList() {
             });
 
             // Armazena a resposta no cache
-            cache.put(berry.url, new Response(JSON.stringify(response)));
+            cache.put(game.url, new Response(JSON.stringify(response)));
           })
           .catch((error: AxiosError) => {
             console.error(error);
@@ -82,9 +82,9 @@ function useGetBerryList() {
     });
   }, []);
 
-  const handleFetchListBerry = useCallback(async () => {
+  const handleFetchListGame = useCallback(async () => {
     // Verifica se a resposta já está no cache
-    const cache = await caches.open("berry");
+    const cache = await caches.open("generation");
     const cachedResponse = await cache.match(url);
 
     if (cachedResponse) {
@@ -95,7 +95,7 @@ function useGetBerryList() {
           setPrevUrl(response.data?.previous);
           setNextUrl(response.data?.next);
 
-          handleFetchBerry(response.data);
+          handleFetchgame(response.data);
         })
         .catch((error: AxiosError) => {
           console.error(error);
@@ -107,7 +107,7 @@ function useGetBerryList() {
           setPrevUrl(response.data.previous);
           setNextUrl(response.data.next);
 
-          handleFetchBerry(response.data);
+          handleFetchgame(response.data);
 
           // Armazena a resposta no cache
           cache.put(url, new Response(JSON.stringify(response)));
@@ -116,13 +116,13 @@ function useGetBerryList() {
           console.error(error);
         });
     }
-  }, [handleFetchBerry, url]);
+  }, [handleFetchgame, url]);
 
   useEffect(() => {
-    handleFetchListBerry();
-  }, [handleFetchListBerry]);
+    handleFetchListGame();
+  }, [handleFetchListGame]);
 
-  return { berryList, prevUrl, nextUrl, handleChangePage };
+  return { games, prevUrl, nextUrl, handleChangePage };
 }
 
-export default useGetBerryList;
+export default useGetGames;

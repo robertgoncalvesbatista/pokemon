@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { HiArrowSmLeft } from "react-icons/hi";
 import { FaToggleOff, FaToggleOn } from "react-icons/fa";
@@ -23,17 +23,17 @@ import {
 } from "./components/@index";
 
 import PokemonSpecie from "./components/specie.component";
+
 import useGetPokemon from "./services/useGetPokemon";
 
-function PokemonDetails() {
+function DetailsPage() {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const { pokemon } = useGetPokemon(id);
+  const { pokemon } = useGetPokemon();
 
   const [isShiny, setIsShiny] = useState<boolean>(false);
 
   if (!pokemon) {
-    return null;
+    return <h1>Nenhum pokemon encontrado</h1>;
   }
 
   // @ts-ignore
@@ -148,4 +148,4 @@ function PokemonDetails() {
   );
 }
 
-export default PokemonDetails;
+export default DetailsPage;

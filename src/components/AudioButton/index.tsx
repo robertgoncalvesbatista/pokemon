@@ -48,6 +48,7 @@ function AudioButton({ link, label }: AudioButtonProps) {
           alignItems: "center",
           gap: "4px",
           color: "white",
+          cursor: "pointer",
         }}
         onClick={handlePlayPause}
       >

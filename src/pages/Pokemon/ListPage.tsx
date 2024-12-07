@@ -25,7 +25,13 @@ import { Pokemon } from "./domain/Pokemon";
 
 function ListPage() {
   const navigate = useNavigate();
-  const { pokemons, prevUrl, nextUrl, handleChangePage } = useGetPokemonList();
+  const {
+    pokemons,
+    prevUrl,
+    nextUrl,
+    handleChangePage,
+    setSearchTemp: setSearch,
+  } = useGetPokemonList();
 
   const [page, setPage] = useState<number>(1);
 
@@ -36,7 +42,7 @@ function ListPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-evenly",
-          marginBottom: "1rem",
+          marginBottom: "0.5rem",
         }}
       >
         <IconButton
@@ -52,6 +58,28 @@ function ListPage() {
         <TitleStyled>Pokémon</TitleStyled>
 
         <div style={{ content: "", width: "40px", height: "40px" }}></div>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "1rem",
+        }}
+      >
+        <input
+          placeholder={"Search..."}
+          onChange={(event: any) => {
+            setSearch(event.target.value);
+          }}
+          style={{
+            width: "60%",
+            border: "1px solid black",
+            outline: "none",
+            padding: "0.5rem 1rem",
+            borderRadius: "4px",
+          }}
+        />
       </div>
 
       <FlexboxStyled>

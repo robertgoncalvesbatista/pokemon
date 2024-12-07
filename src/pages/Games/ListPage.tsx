@@ -9,7 +9,12 @@ import Chip from "@/components/Chip";
 
 import useGetGamesList from "./services/useGetGames";
 
-import { CardStyled, FlexboxStyled, ScreenStyled } from "./components/@index";
+import {
+  CardStyled,
+  FlexboxStyled,
+  MenuChipStyled,
+  ScreenStyled,
+} from "./components/@index";
 
 function ListPage() {
   const navigate = useNavigate();
@@ -68,16 +73,7 @@ function ListPage() {
               <div style={{ marginBottom: "0.5rem" }}>
                 <h6 style={{ fontSize: "8pt" }}>Types:</h6>
 
-                <div
-                  style={{
-                    display: "flex",
-                    maxWidth: "248px",
-                    overflowX: "auto",
-                    padding: "0.25rem 0",
-                    gap: "0.5rem",
-                    height: "44px",
-                  }}
-                >
+                <MenuChipStyled>
                   {game.types.length === 0 && (
                     <Chip
                       variant="outlined"
@@ -99,22 +95,13 @@ function ListPage() {
                       </Chip>
                     );
                   })}
-                </div>
+                </MenuChipStyled>
               </div>
 
               <div>
                 <h6 style={{ fontSize: "8pt" }}>Version groups:</h6>
 
-                <div
-                  style={{
-                    display: "flex",
-                    maxWidth: "248px",
-                    overflowX: "auto",
-                    padding: "0.25rem 0",
-                    gap: "0.5rem",
-                    height: "44px",
-                  }}
-                >
+                <MenuChipStyled>
                   {game.version_groups.length === 0 && (
                     <Chip
                       variant="outlined"
@@ -136,7 +123,7 @@ function ListPage() {
                       </Chip>
                     );
                   })}
-                </div>
+                </MenuChipStyled>
               </div>
             </CardStyled>
           );

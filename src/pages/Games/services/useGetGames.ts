@@ -2,14 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { AxiosError, AxiosResponse } from "axios";
-
-import { Game } from "@/shared/types/Game";
-
-import { Row } from "@/shared/interfaces/Row";
 import { ResponseList } from "@/shared/interfaces/ResponseList";
 
-import request from "@/infrastructure/api/request";
+import requestWithCache from "@/domain/requestWithCache";
+import sortDataById from "@/domain/sortDataById";
+
+import { Game } from "../domain/Game";
 
 function useGetGames() {
   const [games, setGames] = useState<Array<Game>>([]);
@@ -21,106 +19,38 @@ function useGetGames() {
     setUrl(() => `/generation?offset=${page * 20 - 20}&limit=20`);
   }, []);
 
-  const handleFetchgame = useCallback((responseData: ResponseList) => {
+  const handleFetchGame = useCallback((responseData: ResponseList) => {
     setGames([]);
 
-    responseData.results.forEach(async (game: Row) => {
-      // Verifica se a resposta já está no cache
-      const cache = await caches.open("generation");
-      const cachedResponse = await cache.match(game.url);
+    responseData.results.forEach(async (game) => {
+      try {
+        const result = await requestWithCache(game.url, "generation");
 
-      if (cachedResponse) {
-        // Se a resposta estiver no cache, retorna a resposta armazenada
-        cachedResponse
-          .json()
-          .then((response: AxiosResponse<Game>) => {
-            setGames((prevState) => {
-              const data = [...prevState, response.data];
-
-              const sorted = data.sort((a, b) => {
-                if (a.id < b.id) {
-                  return -1;
-                } else if (a.id > b.id) {
-                  return 1;
-                }
-
-                return 0;
-              });
-
-              return sorted;
-            });
-          })
-          .catch((error: AxiosError) => {
-            console.error(error);
-          });
-      } else {
-        await request({ url: game.url })
-          .then((response: AxiosResponse<Game>) => {
-            setGames((prevState) => {
-              const data = [...prevState, response.data];
-
-              const sorted = data.sort((a, b) => {
-                if (a.id < b.id) {
-                  return -1;
-                } else if (a.id > b.id) {
-                  return 1;
-                }
-
-                return 0;
-              });
-
-              return sorted;
-            });
-
-            // Armazena a resposta no cache
-            cache.put(game.url, new Response(JSON.stringify(response)));
-          })
-          .catch((error: AxiosError) => {
-            console.error(error);
-          });
+        setGames((prevState) => {
+          return sortDataById([...prevState, result]);
+        });
+      } catch (error) {
+        console.error(error);
       }
     });
   }, []);
 
-  const handleFetchListGame = useCallback(async () => {
-    // Verifica se a resposta já está no cache
-    const cache = await caches.open("generation");
-    const cachedResponse = await cache.match(url);
+  const handleFetchGames = useCallback(async () => {
+    try {
+      const result = await requestWithCache(url, "generation");
 
-    if (cachedResponse) {
-      // Se a resposta estiver no cache, retorna a resposta armazenada
-      cachedResponse
-        .json()
-        .then(async (response: AxiosResponse) => {
-          setPrevUrl(response.data?.previous);
-          setNextUrl(response.data?.next);
+      setPrevUrl(result?.previous);
+      setNextUrl(result?.next);
 
-          handleFetchgame(response.data);
-        })
-        .catch((error: AxiosError) => {
-          console.error(error);
-        }); // Retorna a resposta em formato JSON
-    } else {
-      // Se não estiver no cache, faz a requisição com Axios
-      await request({ url: url })
-        .then((response: AxiosResponse) => {
-          setPrevUrl(response.data.previous);
-          setNextUrl(response.data.next);
-
-          handleFetchgame(response.data);
-
-          // Armazena a resposta no cache
-          cache.put(url, new Response(JSON.stringify(response)));
-        })
-        .catch((error: AxiosError) => {
-          console.error(error);
-        });
+      handleFetchGame(result);
+    } catch (error) {
+      console.error(error);
     }
-  }, [handleFetchgame, url]);
+  }, [handleFetchGame, url]);
 
   useEffect(() => {
-    handleFetchListGame();
-  }, [handleFetchListGame]);
+    handleFetchGames();
+  }, [handleFetchGames]);
 
   return { games, prevUrl, nextUrl, handleChangePage };
 }

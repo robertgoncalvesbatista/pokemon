@@ -1,6 +1,6 @@
-import { Row } from "../interfaces/Row";
+import { Row } from "@/shared/interfaces/Row";
 
-export type Game = {
+export interface Game {
   id: number;
   abilities: [];
   main_region: Row;
@@ -13,4 +13,4 @@ export type Game = {
   pokemon_species: Array<Row>;
   types: Array<Row>;
   version_groups: Array<Row>;
-};
+}

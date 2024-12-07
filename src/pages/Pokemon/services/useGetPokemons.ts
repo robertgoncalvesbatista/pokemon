@@ -2,24 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { Row } from "@/shared/interfaces/Row";
 import { ResponseList } from "@/shared/interfaces/ResponseList";
 
 import requestWithCache from "@/domain/requestWithCache";
+import sortDataById from "@/domain/sortDataById";
 
 import { Pokemon } from "../domain/Pokemon";
-
-function sorting(data: any[]) {
-  return data.sort((a, b) => {
-    if (a.id < b.id) {
-      return -1;
-    } else if (a.id > b.id) {
-      return 1;
-    }
-
-    return 0;
-  });
-}
 
 function useGetPokemons() {
   const [pokemons, setPokemons] = useState<Array<Pokemon>>([]);
@@ -27,19 +15,50 @@ function useGetPokemons() {
   const [prevUrl, setPrevUrl] = useState<string>("");
   const [nextUrl, setNextUrl] = useState<string>("");
 
+  const [search, setSearch] = useState<string>("");
+  const [searchTemp, setSearchTemp] = useState<string>("");
+
   const handleChangePage = useCallback((page: number = 1) => {
     setUrl(`/pokemon?offset=${page * 20 - 20}&limit=20`);
   }, []);
 
-  const handleFetchDetails = useCallback((responseData: ResponseList) => {
+  // Pesquisa de pokemon
+  const handleSearchPokemon = useCallback(async () => {
     setPokemons([]);
 
-    responseData.results.forEach(async (pokemon: Row) => {
+    try {
+      const result = await requestWithCache("/pokemon/" + search, "pokemon");
+
+      setPokemons([result]);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [search]);
+
+  useEffect(() => {
+    if (!!search) {
+      handleSearchPokemon();
+    }
+  }, [search, handleSearchPokemon]);
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      setSearch(searchTemp);
+    }, 1000);
+
+    return () => clearTimeout(debounce);
+  }, [searchTemp, setSearch]);
+
+  // Listagem de pokemon
+  const handleFetchPokemon = useCallback((responseData: ResponseList) => {
+    setPokemons([]);
+
+    responseData.results.forEach(async (pokemon) => {
       try {
         const result = await requestWithCache(pokemon.url, "pokemon");
 
         setPokemons((prevState) => {
-          return sorting([...prevState, result]);
+          return sortDataById([...prevState, result]);
         });
       } catch (error) {
         console.error(error);
@@ -47,24 +66,26 @@ function useGetPokemons() {
     });
   }, []);
 
-  const handleFetchList = useCallback(async () => {
+  const handleFetchPokemons = useCallback(async () => {
     try {
       const result = await requestWithCache(url, "pokemon");
 
       setPrevUrl(result?.previous);
       setNextUrl(result?.next);
 
-      handleFetchDetails(result);
+      handleFetchPokemon(result);
     } catch (error) {
       console.error(error);
     }
-  }, [handleFetchDetails, url]);
+  }, [url, handleFetchPokemon]);
 
   useEffect(() => {
-    handleFetchList();
-  }, [handleFetchList]);
+    if (!searchTemp) {
+      handleFetchPokemons();
+    }
+  }, [searchTemp, handleFetchPokemons]);
 
-  return { pokemons, prevUrl, nextUrl, handleChangePage };
+  return { pokemons, prevUrl, nextUrl, handleChangePage, setSearchTemp };
 }
 
 export default useGetPokemons;

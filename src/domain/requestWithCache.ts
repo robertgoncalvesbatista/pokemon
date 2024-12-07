@@ -19,7 +19,7 @@ async function requestWithCache(url: string, cacheName: string) {
 
     return response.data;
   } catch (error) {
-    throw new Error("Erro: Não foi possível consultar");
+    throw new Error("Erro: Consulta sem sucesso");
   }
 }
 

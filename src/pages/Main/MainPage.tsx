@@ -2,8 +2,8 @@
 
 import { useNavigate } from "react-router-dom";
 
-import Pikachu from "@/assets/img/pikachu.png";
-import Pokeball from "@/assets/img/pokeball-icon.png";
+import Pikachu from "/img/pikachu.png";
+import Pokeball from "/img/pokeball-icon.png";
 
 import {
   ScreenStyled,

@@ -4,7 +4,6 @@ import { styled } from "@stitches/react";
 
 const List = styled("main", {
   margin: "0 auto",
-  marginTop: "2rem",
   maxWidth: "1200px",
 });
 

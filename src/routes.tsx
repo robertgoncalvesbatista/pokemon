@@ -5,6 +5,7 @@ import PokemonList from "./pages/Pokemon/ListPage";
 import PokemonDetails from "./pages/Pokemon/DetailsPage";
 import BerriesList from "./pages/Berries/ListPage";
 import GamesList from "./pages/Games/ListPage";
+import NotFound from "./pages/404";
 
 function Routes() {
   return (
@@ -24,6 +25,9 @@ function Routes() {
 
         {/* Games route */}
         <Route path="/game" element={<GamesList />} />
+
+        {/* Not found */}
+        <Route path="*" element={<NotFound />} />
       </Switch>
     </HashRouter>
   );

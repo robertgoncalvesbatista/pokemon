@@ -4,44 +4,48 @@ import { HiArrowSmRight } from "react-icons/hi";
 
 import useGetPokemonSpecie from "../services/useGetPokemonSpecie";
 
-import { EvolvesTo } from "../domain/EvolutionChain";
+import { Row } from "@/shared/interfaces/Row";
+
+import ContentStyled from "./content.component";
 
 interface SpecieProps {
-  specie: { name: string; url: string };
+  specie: Row;
 }
 
 function Specie({ specie }: SpecieProps) {
   const { evolutionChain } = useGetPokemonSpecie({ specie });
 
-  if (!evolutionChain?.chain.evolves_to) {
-    return (
+  return (
+    <ContentStyled>
+      <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>
+        Evolution Chain
+      </h2>
+
       <div style={{ display: "flex", justifyContent: "center" }}>
         <ul>
-          <span>Não tem evolução</span>
+          {!evolutionChain?.chain.evolves_to?.length && (
+            <span>Não tem evolução</span>
+          )}
+
+          {!!evolutionChain?.chain.evolves_to &&
+            evolutionChain?.chain.evolves_to.map((firstEvolution) => {
+              return (
+                <li
+                  style={{
+                    textTransform: "capitalize",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <span>{evolutionChain?.chain.species.name}</span>
+                  <HiArrowSmRight size={20} />
+                  <span>{firstEvolution.species.name}</span>
+                </li>
+              );
+            })}
         </ul>
       </div>
-    );
-  }
-
-  return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <ul>
-        {evolutionChain?.chain.evolves_to.map((firstEvolution: EvolvesTo) => {
-          return (
-            <li
-              style={{
-                textTransform: "capitalize",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              {evolutionChain?.chain.species.name} <HiArrowSmRight size={20} />
-              {firstEvolution.species.name}
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    </ContentStyled>
   );
 }
 

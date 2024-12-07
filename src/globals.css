@@ -28,7 +28,7 @@ a {
 }
 
 .logo {
-    background-image: url('../public/logo-pokeball.png');
+    background-image: url('/img/logo-pokeball.png');
     background-size: cover;
     position: absolute;
     width: 110px;

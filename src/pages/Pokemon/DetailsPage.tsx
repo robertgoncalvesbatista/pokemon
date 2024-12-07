@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { HiArrowSmLeft } from "react-icons/hi";
+import { TiArrowBackOutline } from "react-icons/ti";
 import { FaToggleOff, FaToggleOn } from "react-icons/fa";
 
 import ProgressBar from "@/components/ProgressBar";
 import Detail from "@/components/Detail";
 import AudioButton from "@/components/AudioButton";
 import Chip from "@/components/Chip";
+import IconButton from "@/components/IconButton";
 
 import { TypeColor } from "@/shared/enums/TypeColor";
 
@@ -33,7 +34,7 @@ function DetailsPage() {
   const [isShiny, setIsShiny] = useState<boolean>(false);
 
   if (!pokemon) {
-    return <h1>Nenhum pokemon encontrado</h1>;
+    return <div></div>;
   }
 
   // @ts-ignore
@@ -42,22 +43,16 @@ function DetailsPage() {
   return (
     <ScreenStyled.Details>
       <CardStyled.Details css={{ $$bgColor: color }}>
-        <button
-          style={{
-            color: "#fff",
-            fontWeight: "500",
-            display: "flex",
-            alignItems: "center",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-          }}
-          type="button"
+        <IconButton
+          icon={TiArrowBackOutline}
           onClick={() => navigate("/pokemon")}
-        >
-          <HiArrowSmLeft size={20} />
-          Pokédex
-        </button>
+          style={{
+            borderRadius: 0,
+            color: "#fff",
+            background: "none",
+            position: "absolute",
+          }}
+        />
 
         <div
           style={{
@@ -87,21 +82,42 @@ function DetailsPage() {
               <h2>{pokemon.name}</h2>
             </div>
 
-            {pokemon.types.map((item) => {
-              return <Chip key={item.type.name}>{item.type.name}</Chip>;
-            })}
+            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.5rem",
+                }}
+              >
+                {pokemon.types.map((item) => {
+                  return (
+                    <Chip
+                      key={item.type.name}
+                      color="#fff"
+                      style={{ margin: 0 }}
+                    >
+                      {item.type.name}
+                    </Chip>
+                  );
+                })}
+              </div>
 
-            <ButtonStyled.Shiny
-              onClick={() => setIsShiny((prev) => !prev)}
-              style={{ marginBottom: "1rem", marginTop: "1rem" }}
-              title={`${pokemon.name} shiny`}
-            >
-              {isShiny ? <FaToggleOn size={20} /> : <FaToggleOff size={20} />}
-              Shiny
-            </ButtonStyled.Shiny>
+              <div>
+                <ButtonStyled.Shiny
+                  onClick={() => setIsShiny((prev) => !prev)}
+                  title={`${pokemon.name} shiny`}
+                  style={{ marginBottom: "0.5rem" }}
+                >
+                  {!!isShiny && <FaToggleOn size={20} />}
+                  {!isShiny && <FaToggleOff size={20} />}
+                  Shiny
+                </ButtonStyled.Shiny>
 
-            <AudioButton link={pokemon.cries.latest} label={"Latest"} />
-            <AudioButton link={pokemon.cries.legacy} label={"Legacy"} />
+                <AudioButton link={pokemon.cries.latest} label={"Latest"} />
+                <AudioButton link={pokemon.cries.legacy} label={"Legacy"} />
+              </div>
+            </div>
           </div>
         </div>
       </CardStyled.Details>
@@ -137,13 +153,7 @@ function DetailsPage() {
         </StatusStyled>
       </ContentStyled>
 
-      <ContentStyled>
-        <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>
-          Evolution Chain
-        </h2>
-
-        <PokemonSpecie specie={pokemon.species} />
-      </ContentStyled>
+      <PokemonSpecie specie={pokemon.species} />
     </ScreenStyled.Details>
   );
 }

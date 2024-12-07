@@ -1,6 +1,6 @@
-import { Row } from "../interfaces/Row";
+import { Row } from "@/shared/interfaces/Row";
 
-export type Berry = {
+export interface Berry {
   id: number;
   name: string;
   firmness: Row;
@@ -16,4 +16,4 @@ export type Berry = {
     flavor: Row;
     potency: number;
   }>;
-};
+}

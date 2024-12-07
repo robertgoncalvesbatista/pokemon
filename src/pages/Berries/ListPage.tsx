@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { HiArrowSmLeft, HiArrowSmRight, HiHome } from "react-icons/hi";
 
@@ -15,11 +16,9 @@ import {
   ScreenStyled,
 } from "./components/@index";
 
-interface BerriesProps {
-  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
-}
+function BerryList() {
+  const navigate = useNavigate();
 
-function BerryList({ setCurrentPage }: BerriesProps) {
   const [page, setPage] = useState<number>(1);
 
   const { berryList, prevUrl, nextUrl, handleChangePage } = useGetBerryList();
@@ -36,7 +35,7 @@ function BerryList({ setCurrentPage }: BerriesProps) {
       >
         <IconButton
           icon={HiHome}
-          onClick={() => setCurrentPage("main")}
+          onClick={() => navigate("/")}
           style={{
             borderRadius: 0,
             color: "#000",

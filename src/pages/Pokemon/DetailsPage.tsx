@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { HiArrowSmLeft } from "react-icons/hi";
 import { FaToggleOff, FaToggleOn } from "react-icons/fa";
@@ -12,8 +13,6 @@ import Chip from "@/components/Chip";
 
 import { TypeColor } from "@/shared/enums/TypeColor";
 
-import { useRoutes } from "@/shared/hooks/useRoutes";
-
 import {
   ButtonStyled,
   AboutStyled,
@@ -24,22 +23,21 @@ import {
 } from "./components/@index";
 
 import PokemonSpecie from "./components/specie.component";
+import useGetPokemon from "./services/useGetPokemon";
 
-interface PokemonDetailsProps {
-  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
-}
-
-function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
-  const { pokemon } = useRoutes();
+function PokemonDetails() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { pokemon } = useGetPokemon(id);
 
   const [isShiny, setIsShiny] = useState<boolean>(false);
-
-  // @ts-ignore
-  const color = TypeColor[pokemon.types[0].type.name];
 
   if (!pokemon) {
     return null;
   }
+
+  // @ts-ignore
+  const color = TypeColor[pokemon.types[0].type.name];
 
   return (
     <ScreenStyled.Details>
@@ -55,7 +53,7 @@ function PokemonDetails({ setCurrentPage }: PokemonDetailsProps) {
             cursor: "pointer",
           }}
           type="button"
-          onClick={() => setCurrentPage("pokemon.list")}
+          onClick={() => navigate("/pokemon")}
         >
           <HiArrowSmLeft size={20} />
           Pokédex

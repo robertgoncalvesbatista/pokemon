@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { HiArrowSmLeft, HiArrowSmRight, HiHome } from "react-icons/hi";
 
 import Chip from "@/components/Chip";
 import IconButton from "@/components/IconButton";
 
 import { TypeColor } from "@/shared/enums/TypeColor";
-
-import { useRoutes } from "@/shared/hooks/useRoutes";
 
 import {
   FlexboxStyled,
@@ -23,14 +23,10 @@ import useGetPokemonList from "./services/useGetPokemonList";
 
 import { Pokemon } from "./domain/Pokemon";
 
-interface PokemonListProps {
-  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
-}
+function PokemonList() {
+  const navigate = useNavigate();
 
-function PokemonList({ setCurrentPage }: PokemonListProps) {
   const [page, setPage] = useState<number>(1);
-
-  const { setPokemon } = useRoutes();
 
   const { pokemonList, prevUrl, nextUrl, handleChangePage } =
     useGetPokemonList();
@@ -47,7 +43,7 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
       >
         <IconButton
           icon={HiHome}
-          onClick={() => setCurrentPage("main")}
+          onClick={() => navigate("/")}
           style={{
             borderRadius: 0,
             color: "#000",
@@ -70,8 +66,7 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
               key={pokemon.id}
               css={{ $$bgColor: color }}
               onClick={() => {
-                setPokemon(pokemon);
-                setCurrentPage("pokemon.details");
+                navigate("/pokemon/" + pokemon.id);
               }}
             >
               <div style={{ textTransform: "capitalize", color: "white" }}>

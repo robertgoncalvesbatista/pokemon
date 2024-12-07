@@ -1,5 +1,7 @@
 "use client";
 
+import { useNavigate } from "react-router-dom";
+
 import { HiHome } from "react-icons/hi";
 
 import IconButton from "@/components/IconButton";
@@ -9,11 +11,9 @@ import useGetGamesList from "./services/useGetGamesList";
 
 import { CardStyled, FlexboxStyled, ScreenStyled } from "./components/@index";
 
-interface GamesProps {
-  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
-}
+function GameList() {
+  const navigate = useNavigate();
 
-function GameList({ setCurrentPage }: GamesProps) {
   const { gameList } = useGetGamesList();
 
   return (
@@ -28,7 +28,7 @@ function GameList({ setCurrentPage }: GamesProps) {
       >
         <IconButton
           icon={HiHome}
-          onClick={() => setCurrentPage("main")}
+          onClick={() => navigate("/")}
           style={{
             borderRadius: 0,
             color: "#000",

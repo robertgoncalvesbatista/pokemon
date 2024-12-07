@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import Pikachu from "@/assets/img/pikachu.png";
 import Pokeball from "@/assets/img/pokeball-icon.png";
@@ -15,11 +15,9 @@ import {
   FooterBody,
 } from "./components/@index";
 
-interface MainProps {
-  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
-}
+function Main() {
+  const navigate = useNavigate();
 
-function Main({ setCurrentPage }: MainProps) {
   return (
     <ScreenStyled>
       <MainStyled>
@@ -57,17 +55,17 @@ function Main({ setCurrentPage }: MainProps) {
         </WrapperStyled>
 
         <ButtonGroupStyled>
-          <BotaoStyled onClick={() => setCurrentPage("pokemon.list")}>
+          <BotaoStyled onClick={() => navigate("/pokemon")}>
             <img src={Pokeball} alt="" width="32px" />
             Pokemon
           </BotaoStyled>
 
-          <BotaoStyled onClick={() => setCurrentPage("berry.list")}>
+          <BotaoStyled onClick={() => navigate("/berry")}>
             <img src={Pokeball} alt="" width="32px" />
             Berries
           </BotaoStyled>
 
-          <BotaoStyled onClick={() => setCurrentPage("game.list")}>
+          <BotaoStyled onClick={() => navigate("/game")}>
             <img src={Pokeball} alt="" width="32px" />
             Games
           </BotaoStyled>

@@ -28,7 +28,7 @@ function useGetPokemonList() {
   const [nextUrl, setNextUrl] = useState<string>("");
 
   const handleChangePage = useCallback((page: number = 1) => {
-    setUrl(() => `/pokemon?offset=${page * 20 - 20}&limit=20`);
+    setUrl(`/pokemon?offset=${page * 20 - 20}&limit=20`);
   }, []);
 
   const handleFetchDetails = useCallback((responseData: ResponseList) => {

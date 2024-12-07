@@ -4,14 +4,15 @@ import { useCallback, useEffect, useState } from "react";
 
 import { AxiosError, AxiosResponse } from "axios";
 
-import { TBerry } from "@/shared/types/TBerry";
+import { Berry } from "@/shared/types/Berry";
+
 import { Row } from "@/shared/interfaces/Row";
 import { ResponseList } from "@/shared/interfaces/ResponseList";
 
 import request from "@/infrastructure/api/request";
 
 function useGetBerryList() {
-  const [berryList, setBerryList] = useState<Array<TBerry>>([]);
+  const [berryList, setBerryList] = useState<Array<Berry>>([]);
   const [url, setUrl] = useState<string>("/berry?offset=0&limit=20");
   const [prevUrl, setPrevUrl] = useState<string>("");
   const [nextUrl, setNextUrl] = useState<string>("");
@@ -32,7 +33,7 @@ function useGetBerryList() {
         // Se a resposta estiver no cache, retorna a resposta armazenada
         cachedResponse
           .json()
-          .then((response: AxiosResponse<TBerry>) => {
+          .then((response: AxiosResponse<Berry>) => {
             setBerryList((prevState) => {
               const data = [...prevState, response.data];
 
@@ -54,7 +55,7 @@ function useGetBerryList() {
           });
       } else {
         await request({ url: berry.url })
-          .then((response: AxiosResponse<TBerry>) => {
+          .then((response: AxiosResponse<Berry>) => {
             setBerryList((prevState) => {
               const data = [...prevState, response.data];
 

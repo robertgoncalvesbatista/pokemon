@@ -1,6 +1,6 @@
 import { Row } from "../interfaces/Row";
 
-export type TGame = {
+export type Game = {
   id: number;
   abilities: [];
   main_region: Row;

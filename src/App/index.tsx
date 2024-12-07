@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 
-import { RoutesProvider, useRoutes } from "@/hooks/useRoutes";
+import { RoutesProvider, useRoutes } from "@/shared/hooks/useRoutes";
 
 // Main
 import Main from "@/pages/Main/MainPage";

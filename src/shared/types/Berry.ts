@@ -1,6 +1,6 @@
 import { Row } from "../interfaces/Row";
 
-export type TBerry = {
+export type Berry = {
   id: number;
   name: string;
   firmness: Row;

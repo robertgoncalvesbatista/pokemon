@@ -7,19 +7,19 @@ import React, {
   useEffect,
 } from "react";
 
-import { TPokemon } from "@/shared/types/TPokemon";
+import { Pokemon } from "@/shared/types/Pokemon";
 
 interface RoutesContextData {
   currentPage: string;
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
-  pokemon: TPokemon | undefined;
-  setPokemon: React.Dispatch<React.SetStateAction<TPokemon | undefined>>;
+  pokemon: Pokemon | undefined;
+  setPokemon: React.Dispatch<React.SetStateAction<Pokemon | undefined>>;
 }
 
 const RoutesContext = createContext<RoutesContextData>({} as RoutesContextData);
 
 function RoutesProvider({ children }: PropsWithChildren) {
-  const [pokemon, setPokemon] = useState<TPokemon>();
+  const [pokemon, setPokemon] = useState<Pokemon>();
 
   const [currentPage, setCurrentPage] = useState(() => {
     return sessionStorage.getItem("page") ?? "main";

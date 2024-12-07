@@ -1,6 +1,6 @@
 import { Row } from "../interfaces/Row";
 
-export type TItem = {
+export type Item = {
   attributes: Array<Row>;
   baby_trigger_for: { url: string } | null;
   category: Row;

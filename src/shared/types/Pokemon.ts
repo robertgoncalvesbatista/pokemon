@@ -1,6 +1,6 @@
 import { Row } from "../interfaces/Row";
 
-export type TPokemon = {
+export type Pokemon = {
   id: string;
   name: string;
   base_experience: string;

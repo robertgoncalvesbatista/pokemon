@@ -4,14 +4,15 @@ import { useCallback, useEffect, useState } from "react";
 
 import { AxiosError, AxiosResponse } from "axios";
 
-import { TGame } from "@/shared/types/TGame";
+import { Game } from "@/shared/types/Game";
+
 import { Row } from "@/shared/interfaces/Row";
 import { ResponseList } from "@/shared/interfaces/ResponseList";
 
 import request from "@/infrastructure/api/request";
 
 function useGetGamesList() {
-  const [gameList, setGameList] = useState<Array<TGame>>([]);
+  const [gameList, setGameList] = useState<Array<Game>>([]);
   const [url, setUrl] = useState<string>("/generation?offset=0&limit=20");
   const [prevUrl, setPrevUrl] = useState<string>("");
   const [nextUrl, setNextUrl] = useState<string>("");
@@ -32,7 +33,7 @@ function useGetGamesList() {
         // Se a resposta estiver no cache, retorna a resposta armazenada
         cachedResponse
           .json()
-          .then((response: AxiosResponse<TGame>) => {
+          .then((response: AxiosResponse<Game>) => {
             setGameList((prevState) => {
               const data = [...prevState, response.data];
 
@@ -54,7 +55,7 @@ function useGetGamesList() {
           });
       } else {
         await request({ url: game.url })
-          .then((response: AxiosResponse<TGame>) => {
+          .then((response: AxiosResponse<Game>) => {
             setGameList((prevState) => {
               const data = [...prevState, response.data];
 

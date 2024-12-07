@@ -5,9 +5,9 @@ import { HiHome } from "react-icons/hi";
 import IconButton from "@/components/IconButton";
 import Chip from "@/components/Chip";
 
-import useGetGamesList from "./useGetGamesList";
+import useGetGamesList from "./services/useGetGamesList";
 
-import { CardStyled, FlexboxStyled, ScreenStyled } from "./styles";
+import { CardStyled, FlexboxStyled, ScreenStyled } from "./components/@index";
 
 interface GamesProps {
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;

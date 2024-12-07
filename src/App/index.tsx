@@ -3,17 +3,17 @@ import { useCallback, useMemo } from "react";
 import { RoutesProvider, useRoutes } from "@/hooks/useRoutes";
 
 // Main
-import Main from "@/pages/Main";
+import Main from "@/pages/Main/MainPage";
 
 // Pokemon
 import PokemonList from "@/pages/Pokemon/ListPage";
 import PokemonDetails from "@/pages/Pokemon/DetailsPage";
 
 // Berries
-import BerriesList from "@/pages/Berries/list/BerryList";
+import BerriesList from "@/pages/Berries/ListPage";
 
 // Games
-import GamesList from "@/pages/Games/list/GameList";
+import GamesList from "@/pages/Games/ListPage";
 
 function Routes() {
   const { currentPage, setCurrentPage } = useRoutes();

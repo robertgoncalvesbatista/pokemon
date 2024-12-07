@@ -10,9 +10,9 @@ import Detail from "@/components/Detail";
 import AudioButton from "@/components/AudioButton";
 import Chip from "@/components/Chip";
 
-import { TypeColor } from "@/enums/TypeColor";
+import { TypeColor } from "@/shared/enums/TypeColor";
 
-import { useRoutes } from "@/hooks/useRoutes";
+import { useRoutes } from "@/shared/hooks/useRoutes";
 
 import {
   ButtonStyled,

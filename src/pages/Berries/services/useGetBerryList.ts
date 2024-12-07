@@ -4,11 +4,11 @@ import { useCallback, useEffect, useState } from "react";
 
 import { AxiosError, AxiosResponse } from "axios";
 
-import { TBerry } from "@/types/TBerry";
-import { TRow } from "@/types/TRow";
-import { TResponseList } from "@/types/TResponseList";
+import { TBerry } from "@/shared/types/TBerry";
+import { Row } from "@/shared/interfaces/Row";
+import { ResponseList } from "@/shared/interfaces/ResponseList";
 
-import { request } from "@/services/api";
+import request from "@/infrastructure/api/request";
 
 function useGetBerryList() {
   const [berryList, setBerryList] = useState<Array<TBerry>>([]);
@@ -20,10 +20,10 @@ function useGetBerryList() {
     setUrl(() => `/berry?offset=${page * 20 - 20}&limit=20`);
   }, []);
 
-  const handleFetchBerry = useCallback((responseData: TResponseList) => {
+  const handleFetchBerry = useCallback((responseData: ResponseList) => {
     setBerryList([]);
 
-    responseData.results.forEach(async (berry: TRow) => {
+    responseData.results.forEach(async (berry: Row) => {
       // Verifica se a resposta já está no cache
       const cache = await caches.open("berry");
       const cachedResponse = await cache.match(berry.url);

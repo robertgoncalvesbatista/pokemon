@@ -1,4 +1,4 @@
-import { TRow } from "./TRow";
+import { Row } from "../interfaces/Row";
 
 export type TPokemon = {
   id: string;
@@ -8,49 +8,37 @@ export type TPokemon = {
   is_default: boolean;
   order: string;
   weight: string;
-  abilities: [
-    {
-      is_hidden: boolean;
-      slot: string;
-      ability: TRow;
-    }
-  ];
+  abilities: Array<{
+    is_hidden: boolean;
+    slot: string;
+    ability: Row;
+  }>;
   cries: {
     latest: string;
     legacy: string;
   };
-  forms: Array<TRow>;
-  game_indices: [
-    {
-      game_index: string;
-      version: TRow;
-    }
-  ];
-  held_items: [
-    {
-      item: TRow;
-      version_details: [
-        {
-          rarity: string;
-          version: TRow;
-        }
-      ];
-    }
-  ];
+  forms: Array<Row>;
+  game_indices: Array<{
+    game_index: string;
+    version: Row;
+  }>;
+  held_items: Array<{
+    item: Row;
+    version_details: Array<{
+      rarity: string;
+      version: Row;
+    }>;
+  }>;
   location_area_encounters: string;
-  moves: [
-    {
-      move: TRow;
-      version_group_details: [
-        {
-          level_learned_at: string;
-          version_group: TRow;
-          move_learn_method: TRow;
-        }
-      ];
-    }
-  ];
-  species: TRow;
+  moves: Array<{
+    move: Row;
+    version_group_details: Array<{
+      level_learned_at: string;
+      version_group: Row;
+      move_learn_method: Row;
+    }>;
+  }>;
+  species: Row;
   sprites: {
     back_default: string;
     back_female: null;
@@ -217,28 +205,20 @@ export type TPokemon = {
       };
     };
   };
-  stats: [
-    {
-      base_stat: string;
-      effort: string;
-      stat: TRow;
-    }
-  ];
-  types: [
-    {
+  stats: Array<{
+    base_stat: string;
+    effort: string;
+    stat: Row;
+  }>;
+  types: Array<{
+    slot: string;
+    type: Row;
+  }>;
+  past_types: Array<{
+    generation: Row;
+    types: Array<{
       slot: string;
-      type: TRow;
-    }
-  ];
-  past_types: [
-    {
-      generation: TRow;
-      types: [
-        {
-          slot: string;
-          type: TRow;
-        }
-      ];
-    }
-  ];
+      type: Row;
+    }>;
+  }>;
 };

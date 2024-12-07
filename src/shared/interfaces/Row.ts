@@ -1,4 +1,4 @@
-export type TRow = {
+export interface Row {
   name: string;
   url: string;
-};
+}

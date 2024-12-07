@@ -2,16 +2,27 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { AxiosError, AxiosResponse } from "axios";
+import { Row } from "@/shared/interfaces/Row";
+import { ResponseList } from "@/shared/interfaces/ResponseList";
 
-import { TPokemon } from "@/types/TPokemon";
-import { TRow } from "@/types/TRow";
-import { TResponseList } from "@/types/TResponseList";
+import requestWithCache from "@/domain/requestWithCache";
 
-import { request } from "@/services/api";
+import { Pokemon } from "../domain/Pokemon";
+
+function sorting(data: any[]) {
+  return data.sort((a, b) => {
+    if (a.id < b.id) {
+      return -1;
+    } else if (a.id > b.id) {
+      return 1;
+    }
+
+    return 0;
+  });
+}
 
 function useGetPokemonList() {
-  const [pokemonList, setPokemonList] = useState<Array<TPokemon>>([]);
+  const [pokemonList, setPokemonList] = useState<Array<Pokemon>>([]);
   const [url, setUrl] = useState<string>("/pokemon?offset=0&limit=20");
   const [prevUrl, setPrevUrl] = useState<string>("");
   const [nextUrl, setNextUrl] = useState<string>("");
@@ -20,106 +31,38 @@ function useGetPokemonList() {
     setUrl(() => `/pokemon?offset=${page * 20 - 20}&limit=20`);
   }, []);
 
-  const handleFetchPokemon = useCallback((responseData: TResponseList) => {
+  const handleFetchDetails = useCallback((responseData: ResponseList) => {
     setPokemonList([]);
 
-    responseData.results.forEach(async (pokemon: TRow) => {
-      // Verifica se a resposta já está no cache
-      const cache = await caches.open("pokemon");
-      const cachedResponse = await cache.match(pokemon.url);
+    responseData.results.forEach(async (pokemon: Row) => {
+      try {
+        const result = await requestWithCache(pokemon.url, "pokemon");
 
-      if (cachedResponse) {
-        // Se a resposta estiver no cache, retorna a resposta armazenada
-        cachedResponse
-          .json()
-          .then((response: AxiosResponse<TPokemon>) => {
-            setPokemonList((prevState) => {
-              const data = [...prevState, response.data];
-
-              const sorted = data.sort((a, b) => {
-                if (a.id < b.id) {
-                  return -1;
-                } else if (a.id > b.id) {
-                  return 1;
-                }
-
-                return 0;
-              });
-
-              return sorted;
-            });
-          })
-          .catch((error: AxiosError) => {
-            console.error(error);
-          });
-      } else {
-        await request({ url: pokemon.url })
-          .then((response: AxiosResponse<TPokemon>) => {
-            setPokemonList((prevState) => {
-              const data = [...prevState, response.data];
-
-              const sorted = data.sort((a, b) => {
-                if (a.id < b.id) {
-                  return -1;
-                } else if (a.id > b.id) {
-                  return 1;
-                }
-
-                return 0;
-              });
-
-              return sorted;
-            });
-
-            // Armazena a resposta no cache
-            cache.put(pokemon.url, new Response(JSON.stringify(response)));
-          })
-          .catch((error: AxiosError) => {
-            console.error(error);
-          });
+        setPokemonList((prevState) => {
+          return sorting([...prevState, result]);
+        });
+      } catch (error) {
+        console.error(error);
       }
     });
   }, []);
 
-  const handleFetchListPokemon = useCallback(async () => {
-    // Verifica se a resposta já está no cache
-    const cache = await caches.open("pokemon");
-    const cachedResponse = await cache.match(url);
+  const handleFetchList = useCallback(async () => {
+    try {
+      const result = await requestWithCache(url, "pokemon");
 
-    if (cachedResponse) {
-      // Se a resposta estiver no cache, retorna a resposta armazenada
-      cachedResponse
-        .json()
-        .then(async (response: AxiosResponse) => {
-          setPrevUrl(response.data?.previous);
-          setNextUrl(response.data?.next);
+      setPrevUrl(result?.previous);
+      setNextUrl(result?.next);
 
-          handleFetchPokemon(response.data);
-        })
-        .catch((error: AxiosError) => {
-          console.error(error);
-        }); // Retorna a resposta em formato JSON
-    } else {
-      // Se não estiver no cache, faz a requisição com Axios
-      await request({ url: url })
-        .then((response: AxiosResponse) => {
-          setPrevUrl(response.data.previous);
-          setNextUrl(response.data.next);
-
-          handleFetchPokemon(response.data);
-
-          // Armazena a resposta no cache
-          cache.put(url, new Response(JSON.stringify(response)));
-        })
-        .catch((error: AxiosError) => {
-          console.error(error);
-        });
+      handleFetchDetails(result);
+    } catch (error) {
+      console.error(error);
     }
-  }, [handleFetchPokemon, url]);
+  }, [handleFetchDetails, url]);
 
   useEffect(() => {
-    handleFetchListPokemon();
-  }, [handleFetchListPokemon]);
+    handleFetchList();
+  }, [handleFetchList]);
 
   return { pokemonList, prevUrl, nextUrl, handleChangePage };
 }

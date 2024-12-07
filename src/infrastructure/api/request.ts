@@ -6,4 +6,4 @@ async function request(options: AxiosRequestConfig): Promise<AxiosResponse> {
   return await handler({ ...options });
 }
 
-export { request };
+export default request;

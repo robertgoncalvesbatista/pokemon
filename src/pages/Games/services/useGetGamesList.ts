@@ -4,11 +4,11 @@ import { useCallback, useEffect, useState } from "react";
 
 import { AxiosError, AxiosResponse } from "axios";
 
-import { TGame } from "@/types/TGame";
-import { TRow } from "@/types/TRow";
-import { TResponseList } from "@/types/TResponseList";
+import { TGame } from "@/shared/types/TGame";
+import { Row } from "@/shared/interfaces/Row";
+import { ResponseList } from "@/shared/interfaces/ResponseList";
 
-import { request } from "@/services/api";
+import request from "@/infrastructure/api/request";
 
 function useGetGamesList() {
   const [gameList, setGameList] = useState<Array<TGame>>([]);
@@ -20,10 +20,10 @@ function useGetGamesList() {
     setUrl(() => `/generation?offset=${page * 20 - 20}&limit=20`);
   }, []);
 
-  const handleFetchgame = useCallback((responseData: TResponseList) => {
+  const handleFetchgame = useCallback((responseData: ResponseList) => {
     setGameList([]);
 
-    responseData.results.forEach(async (game: TRow) => {
+    responseData.results.forEach(async (game: Row) => {
       // Verifica se a resposta já está no cache
       const cache = await caches.open("generation");
       const cachedResponse = await cache.match(game.url);

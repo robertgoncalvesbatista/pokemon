@@ -2,9 +2,9 @@
 
 import { HiArrowSmRight } from "react-icons/hi";
 
-import { TEvolvesTo } from "@/types/TEvolutionChain";
-
 import useGetPokemonSpecie from "../services/useGetPokemonSpecie";
+
+import { EvolvesTo } from "../domain/EvolutionChain";
 
 interface SpecieProps {
   specie: { name: string; url: string };
@@ -26,7 +26,7 @@ function Specie({ specie }: SpecieProps) {
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <ul>
-        {evolutionChain?.chain.evolves_to.map((firstEvolution: TEvolvesTo) => {
+        {evolutionChain?.chain.evolves_to.map((firstEvolution: EvolvesTo) => {
           return (
             <li
               style={{

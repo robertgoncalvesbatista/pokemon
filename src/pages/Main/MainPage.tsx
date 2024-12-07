@@ -13,7 +13,7 @@ import {
   FooterStyled,
   WrapperStyled,
   FooterBody,
-} from "./styles";
+} from "./components/@index";
 
 interface MainProps {
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;

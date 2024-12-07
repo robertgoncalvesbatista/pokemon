@@ -7,7 +7,7 @@ import React, {
   useEffect,
 } from "react";
 
-import { TPokemon } from "@/types/TPokemon";
+import { TPokemon } from "@/shared/types/TPokemon";
 
 interface RoutesContextData {
   currentPage: string;
@@ -15,6 +15,7 @@ interface RoutesContextData {
   pokemon: TPokemon | undefined;
   setPokemon: React.Dispatch<React.SetStateAction<TPokemon | undefined>>;
 }
+
 const RoutesContext = createContext<RoutesContextData>({} as RoutesContextData);
 
 function RoutesProvider({ children }: PropsWithChildren) {

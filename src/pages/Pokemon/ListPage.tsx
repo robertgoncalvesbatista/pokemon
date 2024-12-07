@@ -6,13 +6,9 @@ import { HiArrowSmLeft, HiArrowSmRight, HiHome } from "react-icons/hi";
 import Chip from "@/components/Chip";
 import IconButton from "@/components/IconButton";
 
-import { TPokemon } from "@/types/TPokemon";
+import { TypeColor } from "@/shared/enums/TypeColor";
 
-import { TypeColor } from "@/enums/TypeColor";
-
-import { useRoutes } from "@/hooks/useRoutes";
-
-import useGetPokemonList from "./services/useGetPokemonList";
+import { useRoutes } from "@/shared/hooks/useRoutes";
 
 import {
   FlexboxStyled,
@@ -22,6 +18,10 @@ import {
   ScreenStyled,
   CardStyled,
 } from "./components/@index";
+
+import useGetPokemonList from "./services/useGetPokemonList";
+
+import { Pokemon } from "./domain/Pokemon";
 
 interface PokemonListProps {
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
@@ -61,7 +61,7 @@ function PokemonList({ setCurrentPage }: PokemonListProps) {
       </div>
 
       <FlexboxStyled>
-        {pokemonList.map((pokemon: TPokemon) => {
+        {pokemonList.map((pokemon: Pokemon) => {
           // @ts-ignore
           const color = TypeColor[pokemon.types[0].type.name];
 

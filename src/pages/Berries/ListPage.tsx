@@ -6,14 +6,14 @@ import { HiArrowSmLeft, HiArrowSmRight, HiHome } from "react-icons/hi";
 
 import IconButton from "@/components/IconButton";
 
-import useGetBerryList from "./useGetBerryList";
+import useGetBerryList from "./services/useGetBerryList";
 
 import {
   ButtonGroupStyled,
   CardStyled,
   FlexboxStyled,
   ScreenStyled,
-} from "./styles";
+} from "./components/@index";
 
 interface BerriesProps {
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;

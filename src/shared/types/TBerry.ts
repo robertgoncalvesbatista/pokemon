@@ -1,21 +1,19 @@
-import { TRow } from "./TRow";
+import { Row } from "../interfaces/Row";
 
 export type TBerry = {
   id: number;
   name: string;
-  firmness: TRow;
+  firmness: Row;
   growth_time: number;
-  item: TRow;
+  item: Row;
   max_harvest: number;
   natural_gift_power: number;
-  natural_gift_type: TRow;
+  natural_gift_type: Row;
   size: number;
   smoothness: number;
   soil_dryness: number;
-  flavors: [
-    {
-      flavor: TRow;
-      potency: number;
-    }
-  ];
+  flavors: Array<{
+    flavor: Row;
+    potency: number;
+  }>;
 };

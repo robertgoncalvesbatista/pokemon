@@ -1,38 +1,38 @@
-import { TRow } from "./TRow";
+import { Row } from "../interfaces/Row";
 
 export type TItem = {
-  attributes: TRow[];
+  attributes: Array<Row>;
   baby_trigger_for: { url: string } | null;
-  category: TRow;
+  category: Row;
   cost: number;
   effect_entries: Array<{
     effect: string;
-    language: TRow;
+    language: Row;
     short_effect: string;
   }>;
   flavor_text_entries: Array<{
-    language: TRow;
+    language: Row;
     text: string;
-    version_group: TRow;
+    version_group: Row;
   }>;
-  fling_effect: TRow;
+  fling_effect: Row;
   fling_power: number;
   game_indices: Array<{
     game_index: number;
-    generation: TRow;
+    generation: Row;
   }>;
   held_by_pokemon: Array<{
-    pokemon: TRow;
+    pokemon: Row;
     version_details: Array<{
       rarity: number;
-      version: TRow;
+      version: Row;
     }>;
   }>;
   id: number;
   machines: [];
   name: string;
   names: Array<{
-    language: TRow;
+    language: Row;
     name: string;
   }>;
   sprites: {

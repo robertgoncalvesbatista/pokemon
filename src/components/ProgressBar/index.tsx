@@ -1,6 +1,6 @@
 "use client";
 
-import { TypeStatus } from "@/enums/TypeStatus";
+import { TypeStatus } from "@/shared/enums/TypeStatus";
 
 import {
   ContainerProgreesBar,

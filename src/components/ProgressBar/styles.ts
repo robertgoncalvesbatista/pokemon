@@ -4,24 +4,27 @@ import { styled } from "@stitches/react";
 
 export const ContainerProgreesBar = styled("div", {
   display: "grid",
-  gridTemplateColumns: "0.6fr 5fr 0.5fr",
-  marginBottom: "0.5rem",
+  gridTemplateColumns: "minmax(88px, 1fr) 5fr 54px",
+  gap: "12px",
+  marginBottom: "12px",
   alignItems: "center",
 });
 
 export const BarBackProgressBar = styled("div", {
-  border: "2px solid #e5e5e5",
-  backgroundColor: "#e5e5e5",
+  border: "none",
+  backgroundColor: "#edf1f6",
   borderRadius: "25px",
-  height: "15px",
+  height: "12px",
+  overflow: "hidden",
 });
 
 export const BarFrontProgressBar = styled("div", {
-  backgroundColor: "#2a9d8f",
+  background: "linear-gradient(90deg, #70c8dc, #ef4f4f)",
   borderRadius: "25px",
   width: "$$percentage",
   height: "100%",
-  padding: "0.2rem 0.6rem",
+  minWidth: "8px",
+  transition: "width 600ms cubic-bezier(.2,.8,.2,1)",
 });
 
 export const ValueProgressBar = styled("p", {

@@ -2,15 +2,11 @@ import { styled } from "@stitches/react";
 
 const MenuChipStyled = styled("div", {
   display: "flex",
-  maxWidth: "248px",
+  maxWidth: "100%",
   overflowX: "auto",
   padding: "0.25rem 0",
   gap: "0.5rem",
-  height: "44px",
-
-  "@media (min-width: 600px)": {
-    maxWidth: "288px",
-  },
+  minHeight: "44px",
 });
 
 export default MenuChipStyled;

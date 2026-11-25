@@ -1,6 +1,6 @@
 "use server";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ResponseList } from "@/shared/interfaces/ResponseList";
 
@@ -11,48 +11,44 @@ import { Game } from "../domain/Game";
 
 function useGetGames() {
   const [games, setGames] = useState<Array<Game>>([]);
-  const [url, setUrl] = useState<string>("/generation?offset=0&limit=20");
-  const [prevUrl, setPrevUrl] = useState<string>("");
-  const [nextUrl, setNextUrl] = useState<string>("");
-
-  const handleChangePage = useCallback((page: number = 1) => {
-    setUrl(() => `/generation?offset=${page * 20 - 20}&limit=20`);
-  }, []);
-
-  const handleFetchGame = useCallback((responseData: ResponseList) => {
-    setGames([]);
-
-    responseData.results.forEach(async (game) => {
-      try {
-        const result = await requestWithCache(game.url, "generation");
-
-        setGames((prevState) => {
-          return sortDataById([...prevState, result]);
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    });
-  }, []);
-
-  const handleFetchGames = useCallback(async () => {
-    try {
-      const result = await requestWithCache(url, "generation");
-
-      setPrevUrl(result?.previous);
-      setNextUrl(result?.next);
-
-      handleFetchGame(result);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [handleFetchGame, url]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    handleFetchGames();
-  }, [handleFetchGames]);
+    let isCurrentRequest = true;
+    setIsLoading(true);
+    setError("");
 
-  return { games, prevUrl, nextUrl, handleChangePage };
+    const fetchGames = async () => {
+      try {
+        const response: ResponseList = await requestWithCache("/generation?offset=0&limit=20", "generation");
+        const results = await Promise.all(
+          response.results.map((game) =>
+            requestWithCache(game.url, "generation") as Promise<Game>
+          )
+        );
+
+        if (isCurrentRequest) {
+          setGames(sortDataById(results));
+        }
+      } catch (requestError) {
+        console.error(requestError);
+        if (isCurrentRequest) {
+          setGames([]);
+          setError("Não foi possível carregar as gerações. Tente novamente.");
+        }
+      } finally {
+        if (isCurrentRequest) setIsLoading(false);
+      }
+    };
+
+    fetchGames();
+    return () => {
+      isCurrentRequest = false;
+    };
+  }, []);
+
+  return { games, isLoading, error };
 }
 
 export default useGetGames;

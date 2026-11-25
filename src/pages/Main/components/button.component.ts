@@ -21,21 +21,30 @@ const Item = styled("button", {
   },
 
   padding: "0.5rem",
-  border: "1px solid #212529",
-  borderRadius: "8px",
-  background: "#f8f9fa",
-  color: "#212529",
-  width: "120px",
+  border: "1px solid rgba(23, 34, 59, 0.10)",
+  borderRadius: "12px",
+  background: "#fff",
+  color: "#202124",
+  width: "min(100%, 180px)",
+  minHeight: "56px",
+  paddingInline: "16px",
   display: "flex",
-  gap: "0.5rem",
+  gap: "12px",
   alignItems: "center",
+  justifyContent: "center",
   cursor: "pointer",
   margin: "0 auto",
-  transition: ".1s ease-in-out",
+  fontWeight: 700,
+  boxShadow: "0 8px 20px rgba(113, 78, 12, 0.10)",
+  transition: "transform 180ms ease, box-shadow 180ms ease",
 
   "&:hover": {
     transform: "translateY(-4px)",
-    transition: ".1s ease-in-out",
+    boxShadow: "0 14px 26px rgba(113, 78, 12, 0.16)",
+  },
+
+  "&:active": {
+    transform: "translateY(-1px)",
   },
 
   "@media (min-width: 600px)": {

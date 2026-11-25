@@ -3,21 +3,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { HiArrowSmLeft, HiArrowSmRight, HiHome } from "react-icons/hi";
+import { MdChevronLeft, MdChevronRight, MdGridView } from "react-icons/md";
 
-import Chip from "@/components/Chip";
 import IconButton from "@/components/IconButton";
+import Loading from "@/components/Loading";
 
 import { TypeColor } from "@/shared/enums/TypeColor";
-
-import {
-  FlexboxStyled,
-  ImageStyled,
-  TitleStyled,
-  ButtonStyled,
-  ScreenStyled,
-  CardStyled,
-} from "./components/@index";
 
 import useGetPokemonList from "./services/useGetPokemons";
 
@@ -29,120 +20,149 @@ function ListPage() {
     pokemons,
     prevUrl,
     nextUrl,
+    count,
+    isLoading,
+    error,
     handleChangePage,
     setSearchTemp: setSearch,
   } = useGetPokemonList();
 
   const [page, setPage] = useState<number>(1);
+  const [selectedType, setSelectedType] = useState<string>("all");
+  const filteredPokemons = selectedType === "all"
+    ? pokemons
+    : pokemons.filter((pokemon) => pokemon.types.some(({ type }) => type.name === selectedType));
+  const availableTypes = Array.from(
+    new Set(pokemons.flatMap((pokemon) => pokemon.types.map(({ type }) => type.name)))
+  ).sort();
 
   return (
-    <ScreenStyled.List>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-evenly",
-          marginBottom: "0.5rem",
-        }}
-      >
+    <main className="app-page">
+      <header className="page-header">
         <IconButton
-          icon={HiHome}
+          icon={MdGridView}
           onClick={() => navigate("/")}
+          aria-label="Voltar para o início"
           style={{
-            borderRadius: 0,
+            borderRadius: "12px",
             color: "#000",
             backgroundColor: "#fff",
+            boxShadow: "0 8px 20px rgba(40, 44, 52, 0.08)",
           }}
         />
+        <div className="page-heading">
+          <h1>Pokédex</h1>
+          <p>Explore espécies, tipos e características da PokéAPI.</p>
+        </div>
+        <span aria-hidden="true" />
+      </header>
 
-        <TitleStyled>Pokémon</TitleStyled>
-
-        <div style={{ content: "", width: "40px", height: "40px" }}></div>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          marginBottom: "1rem",
-        }}
-      >
+      <section className="page-toolbar" aria-label="Busca e filtros">
         <input
-          placeholder={"Search..."}
-          onChange={(event: any) => {
-            setSearch(event.target.value);
-          }}
-          style={{
-            width: "60%",
-            border: "1px solid black",
-            outline: "none",
-            padding: "0.5rem 1rem",
-            borderRadius: "4px",
+          className="page-search"
+          placeholder="Buscar por nome ou número..."
+          aria-label="Pesquisar Pokémon"
+          type="search"
+          onChange={(event) => {
+            setSelectedType("all");
+            setSearch(event.currentTarget.value);
           }}
         />
-      </div>
+        <label>
+          <span className="sr-only">Filtrar por tipo nesta página</span>
+          <select
+            className="page-select"
+            value={selectedType}
+            onChange={(event) => setSelectedType(event.currentTarget.value)}
+            aria-label="Filtrar por tipo nesta página"
+          >
+            <option value="all">Todos os tipos</option>
+            {availableTypes.map((type) => (
+              <option key={type} value={type}>{type}</option>
+            ))}
+          </select>
+        </label>
+        <p className="muted-copy" aria-live="polite">
+          {count ? `${count.toLocaleString("pt-BR")} espécies` : ""}
+        </p>
+      </section>
 
-      <FlexboxStyled>
-        {pokemons.map((pokemon: Pokemon) => {
-          // @ts-ignore
-          const color = TypeColor[pokemon.types[0].type.name];
+      <section className="catalog-grid" aria-label="Lista de Pokémon">
+        {isLoading && <Loading label="Carregando Pokémon..." />}
+        {!isLoading && error && (
+          <div className="page-state" role="status">
+            <h2>Não encontramos esse Pokémon</h2>
+            <p>{error}</p>
+          </div>
+        )}
+        {!isLoading && !error && filteredPokemons.length === 0 && (
+          <div className="page-state">
+            <h2>Nenhum resultado neste tipo</h2>
+            <p>Escolha outro tipo ou limpe o filtro para continuar explorando.</p>
+          </div>
+        )}
+        {!isLoading && filteredPokemons.map((pokemon: Pokemon) => {
+          const color = TypeColor[pokemon.types[0]?.type.name as keyof typeof TypeColor] ?? "#d9deea";
 
           return (
-            <CardStyled.List
+            <button
+              className="catalog-card pokemon-card"
               key={pokemon.id}
-              css={{ $$bgColor: color }}
+              type="button"
+              style={{ borderTop: `4px solid ${color}` }}
               onClick={() => {
                 navigate("/pokemon/" + pokemon.id);
               }}
+              aria-label={`Ver detalhes de ${pokemon.name}`}
             >
-              <div style={{ textTransform: "capitalize", color: "white" }}>
-                <h4 style={{ marginBottom: "1rem" }}>{pokemon.name}</h4>
-
-                {pokemon.types.map(({ type }) => {
-                  return (
-                    <Chip color="#fff" key={type.name}>
-                      {type.name}
-                    </Chip>
-                  );
-                })}
+              <div className="pokemon-card-copy">
+                <span className="pokemon-number">Nº {String(pokemon.id).padStart(3, "0")}</span>
+                <h2>{pokemon.name}</h2>
+                <div className="detail-tags">
+                  {pokemon.types.map(({ type }) => (
+                    <span className="detail-tag" key={type.name}>{type.name}</span>
+                  ))}
+                </div>
+                <span className="pokemon-experience">
+                  {pokemon.base_experience} EXP base
+                </span>
               </div>
-
-              <div>
-                <i className="logo"></i>
-
-                <ImageStyled
-                  loading="eager"
-                  title={pokemon.name}
-                  src={pokemon.sprites.other["official-artwork"].front_default}
-                  width="96"
-                  height="96"
-                />
-              </div>
-            </CardStyled.List>
+              <img
+                loading="lazy"
+                title={pokemon.name}
+                alt=""
+                src={pokemon.sprites.other["official-artwork"].front_default || pokemon.sprites.front_default}
+                width="112"
+                height="112"
+              />
+            </button>
           );
         })}
-      </FlexboxStyled>
+      </section>
 
-      <ButtonStyled.Group>
+      <nav className="page-pagination" aria-label="Paginação da Pokédex">
         <IconButton
-          icon={HiArrowSmLeft}
+          icon={MdChevronLeft}
           disabled={!prevUrl}
           onClick={() => {
+            setSelectedType("all");
             handleChangePage(page - 1);
             setPage((prev) => prev - 1);
           }}
+          aria-label="Página anterior"
         />
-
         <IconButton
-          icon={HiArrowSmRight}
+          icon={MdChevronRight}
           disabled={!nextUrl}
           onClick={() => {
+            setSelectedType("all");
             handleChangePage(page + 1);
             setPage((prev) => prev + 1);
           }}
+          aria-label="Próxima página"
         />
-      </ButtonStyled.Group>
-    </ScreenStyled.List>
+      </nav>
+    </main>
   );
 }
 

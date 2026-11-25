@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 
-import { AiFillSound } from "react-icons/ai";
+import { IoVolumeHigh, IoVolumeMute } from "react-icons/io5";
 
 interface AudioButtonProps {
   link: string;
@@ -43,16 +43,19 @@ function AudioButton({ link, label }: AudioButtonProps) {
         style={{
           background: "none",
           border: "none",
-          marginRight: "1rem",
+          marginBottom: "6px",
           display: "flex",
           alignItems: "center",
-          gap: "4px",
+          gap: "6px",
           color: "white",
           cursor: "pointer",
+          minHeight: "32px",
+          fontWeight: 700,
+          fontSize: "10pt",
         }}
         onClick={handlePlayPause}
       >
-        <AiFillSound size={20} color="white" /> {label}
+        {isPlaying ? <IoVolumeMute size={18} /> : <IoVolumeHigh size={18} />} {label}
       </button>
     </>
   );

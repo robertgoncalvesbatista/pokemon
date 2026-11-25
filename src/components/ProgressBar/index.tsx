@@ -17,19 +17,18 @@ interface ProgressBarProps {
 }
 
 function ProgressBar({ name, value, max }: ProgressBarProps) {
-  // @ts-ignore
-  const status = TypeStatus[name];
-  const percentage = (value * 100) / max;
+  const status = TypeStatus[name as keyof typeof TypeStatus] ?? name;
+  const percentage = Math.min(100, (value * 100) / max);
 
   return (
-    <ContainerProgreesBar>
+    <ContainerProgreesBar role="meter" aria-label={status} aria-valuenow={value} aria-valuemin={0} aria-valuemax={max}>
       <SpanProgressBar>{status}</SpanProgressBar>
 
       <BarBackProgressBar>
         <BarFrontProgressBar css={{ $$percentage: `${percentage}%` }} />
       </BarBackProgressBar>
 
-      <ValueProgressBar>{value}/300</ValueProgressBar>
+      <ValueProgressBar>{value}/{max}</ValueProgressBar>
     </ContainerProgreesBar>
   );
 }

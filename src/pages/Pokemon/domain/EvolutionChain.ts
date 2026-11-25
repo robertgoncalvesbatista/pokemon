@@ -21,7 +21,7 @@ interface EvolutionDetails {
   turn_upside_down: boolean;
 }
 
-interface EvolvesTo {
+export interface EvolvesTo {
   evolution_details?: Array<EvolutionDetails>;
   evolves_to?: Array<EvolvesTo>;
   is_baby: boolean;

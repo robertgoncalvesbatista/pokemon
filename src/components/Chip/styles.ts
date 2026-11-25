@@ -1,7 +1,7 @@
 import { styled } from "@stitches/react";
 
 export const ChipStyled = styled("div", {
-  marginBottom: "0.5rem",
+  marginBottom: "6px",
 });
 
 export const ChipTextStyled = styled("span", {
@@ -18,8 +18,8 @@ export const ChipTextStyled = styled("span", {
 
   color: "$$color",
 
-  fontSize: "8pt",
-  fontWeight: 400,
+  fontSize: "9pt",
+  fontWeight: 700,
 
   display: "inline-block",
   /* ou defina um valor específico de largura */

@@ -6,6 +6,7 @@ import { Button } from "./styles";
 interface IconButtonProps {
   icon: IconType;
   disabled?: boolean;
+  "aria-label"?: string;
   onClick?: React.JSX.MouseEventHandler<HTMLButtonElement>;
   style?:
     | string
@@ -14,9 +15,9 @@ interface IconButtonProps {
     | undefined;
 }
 
-function IconButton({ icon, disabled, onClick, style }: IconButtonProps) {
+function IconButton({ icon, disabled, onClick, style, "aria-label": ariaLabel }: IconButtonProps) {
   return (
-    <Button disabled={disabled} onClick={onClick} style={style}>
+    <Button disabled={disabled} onClick={onClick} style={style} aria-label={ariaLabel}>
       {React.createElement(icon, { size: 20 })}
     </Button>
   );

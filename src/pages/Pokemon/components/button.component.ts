@@ -11,8 +11,10 @@ const Group = styled("div", {
 });
 
 const Shiny = styled("button", {
-  background: "none",
-  border: "none",
+  background: "rgba(255,255,255,.16)",
+  border: "1px solid rgba(255,255,255,.38)",
+  borderRadius: "10px",
+  padding: "8px 10px",
   color: "white",
   cursor: "pointer",
   display: "flex",

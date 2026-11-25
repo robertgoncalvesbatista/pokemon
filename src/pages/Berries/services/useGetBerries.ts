@@ -1,6 +1,6 @@
 "use server";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ResponseList } from "@/shared/interfaces/ResponseList";
 
@@ -14,45 +14,52 @@ function useGetBerries() {
   const [url, setUrl] = useState<string>("/berry?offset=0&limit=20");
   const [prevUrl, setPrevUrl] = useState<string>("");
   const [nextUrl, setNextUrl] = useState<string>("");
+  const [count, setCount] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
 
-  const handleChangePage = useCallback((page: number = 1) => {
-    setUrl(() => `/berry?offset=${page * 20 - 20}&limit=20`);
-  }, []);
-
-  const handleFetchBerry = useCallback((responseData: ResponseList) => {
-    setBerries([]);
-
-    responseData.results.forEach(async (berry) => {
-      try {
-        const result = await requestWithCache(berry.url, "berry");
-
-        setBerries((prevState) => {
-          return sortDataById([...prevState, result]);
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    });
-  }, []);
-
-  const handleFetchBerries = useCallback(async () => {
-    try {
-      const result = await requestWithCache(url, "berry");
-
-      setPrevUrl(result?.previous);
-      setNextUrl(result?.next);
-
-      handleFetchBerry(result);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [handleFetchBerry, url]);
+  const handleChangePage = (page: number = 1) => {
+    setUrl(`/berry?offset=${Math.max(0, page * 20 - 20)}&limit=20`);
+  };
 
   useEffect(() => {
-    handleFetchBerries();
-  }, [handleFetchBerries]);
+    let isCurrentRequest = true;
+    setIsLoading(true);
+    setError("");
 
-  return { berries, prevUrl, nextUrl, handleChangePage };
+    const fetchBerries = async () => {
+      try {
+        const response: ResponseList = await requestWithCache(url, "berry");
+        const results = await Promise.all(
+          response.results.map((berry) =>
+            requestWithCache(berry.url, "berry") as Promise<Berry>
+          )
+        );
+
+        if (isCurrentRequest) {
+          setBerries(sortDataById(results));
+          setCount(response.count);
+          setPrevUrl(response.previous ?? "");
+          setNextUrl(response.next ?? "");
+        }
+      } catch (requestError) {
+        console.error(requestError);
+        if (isCurrentRequest) {
+          setBerries([]);
+          setError("Não foi possível carregar as berries. Tente novamente.");
+        }
+      } finally {
+        if (isCurrentRequest) setIsLoading(false);
+      }
+    };
+
+    fetchBerries();
+    return () => {
+      isCurrentRequest = false;
+    };
+  }, [url]);
+
+  return { berries, prevUrl, nextUrl, count, isLoading, error, handleChangePage };
 }
 
 export default useGetBerries;

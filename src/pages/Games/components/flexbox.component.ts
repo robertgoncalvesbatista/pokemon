@@ -1,12 +1,10 @@
 import { styled } from "@stitches/react";
 
 const FlexboxStyled = styled("div", {
-  display: "flex",
-  justifyContent: "center",
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
   padding: "0 1rem",
-
-  gap: "1rem",
-  flexWrap: "wrap",
+  gap: "16px",
 });
 
 export default FlexboxStyled;

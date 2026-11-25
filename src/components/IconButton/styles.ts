@@ -11,15 +11,16 @@ export const Button = styled("button", {
   fontSize: "18pt",
 
   border: "none",
-  borderRadius: "50%",
+  borderRadius: "12px",
 
-  backgroundColor: "#6c757d",
+  backgroundColor: "#17223b",
   color: "#fff",
 
   cursor: "pointer",
-  transition: ".3s",
+  transition: "180ms ease",
+  boxShadow: "0 8px 18px rgba(23,34,59,.16)",
 
-  "&:hover": { backgroundColor: "#adb5bd" },
+  "&:hover": { backgroundColor: "#ef4f4f", transform: "translateY(-2px)" },
 
   "&:disabled": {
     backgroundColor: "#ced4da",

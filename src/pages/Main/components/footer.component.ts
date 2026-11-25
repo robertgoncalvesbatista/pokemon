@@ -3,7 +3,7 @@
 import { styled } from "@stitches/react";
 
 const Container = styled("div", {
-  padding: "1rem 0",
+  padding: "16px",
   width: "100%",
   position: "absolute",
   bottom: 0,
@@ -14,6 +14,8 @@ const Container = styled("div", {
 export const Body = styled("div", {
   maxWidth: "280px",
   fontSize: "8pt",
+  color: "#d3d9e5",
+  textAlign: "center",
 
   "@media (min-width: 600px)": {
     maxWidth: "580px",

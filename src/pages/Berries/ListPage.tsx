@@ -2,117 +2,105 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { HiArrowSmLeft, HiArrowSmRight, HiHome } from "react-icons/hi";
+import { MdChevronLeft, MdChevronRight, MdGridView } from "react-icons/md";
 
 import IconButton from "@/components/IconButton";
-
+import Loading from "@/components/Loading";
 import useGetBerries from "./services/useGetBerries";
-
-import {
-  ButtonStyled,
-  CardStyled,
-  FlexboxStyled,
-  ScreenStyled,
-} from "./components/@index";
 
 function ListPage() {
   const navigate = useNavigate();
-  const { berries, prevUrl, nextUrl, handleChangePage } = useGetBerries();
-
+  const { berries, prevUrl, nextUrl, count, isLoading, error, handleChangePage } = useGetBerries();
   const [page, setPage] = useState<number>(1);
 
   return (
-    <ScreenStyled>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-evenly",
-          marginBottom: "1rem",
-        }}
-      >
+    <main className="app-page">
+      <header className="page-header">
         <IconButton
-          icon={HiHome}
+          icon={MdGridView}
           onClick={() => navigate("/")}
-          style={{
-            borderRadius: 0,
-            color: "#000",
-            backgroundColor: "#fff",
-          }}
+          aria-label="Voltar para o início"
+          style={{ borderRadius: "12px", color: "#17223b", backgroundColor: "#fff" }}
         />
+        <div className="page-heading">
+          <h1>Frutas e berries</h1>
+          <p>Descubra sabores, propriedades e cultivo de cada berry.</p>
+        </div>
+        <span aria-hidden="true" />
+      </header>
 
-        <h1 style={{ textAlign: "center" }}>Berries</h1>
-
-        <div style={{ content: "", width: "40px", height: "40px" }}></div>
+      <div className="collection-summary">
+        <strong>{count} berries</strong>
+        <span>Dados de cultivo e efeitos especiais</span>
       </div>
 
-      <FlexboxStyled>
-        {berries.map((berry) => {
-          return (
-            <CardStyled>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <img
-                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${berry.item.name}.png`}
-                  alt={berry.name}
-                  style={{
-                    objectFit: "cover",
-                    width: "35px",
-                    height: "35px",
-                  }}
-                />
-
-                <h4 style={{ textTransform: "capitalize" }}>{berry.name}</h4>
+      <section className="catalog-grid" aria-label="Lista de berries">
+        {isLoading && <Loading label="Carregando berries..." />}
+        {!isLoading && error && <div className="page-state" role="alert">{error}</div>}
+        {!isLoading && berries.map((berry) => (
+          <article className="catalog-card berry-card" key={berry.name}>
+            <header className="berry-card-heading">
+              <img
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${berry.item.name}.png`}
+                alt=""
+                width="56"
+                height="56"
+                loading="lazy"
+              />
+              <div>
+                <h2>{berry.name.replace(/-/g, " ")}</h2>
+                <span className="detail-tag">{berry.firmness.name} berry</span>
               </div>
+            </header>
 
-              <div style={{ display: "flex", gap: "1rem" }}>
-                <div>
-                  <p style={{ fontSize: "10pt" }}>
-                    Growth time: {berry.growth_time}
-                  </p>
-                  <p style={{ fontSize: "10pt" }}>
-                    Max harvest: {berry.max_harvest}
-                  </p>
-                  <p style={{ fontSize: "10pt" }}>
-                    Natural gift power: {berry.natural_gift_power}
-                  </p>
-                </div>
-
-                <div>
-                  <p style={{ fontSize: "10pt" }}>Size: {berry.size}</p>
-                  <p style={{ fontSize: "10pt" }}>
-                    Smoothness: {berry.smoothness}
-                  </p>
-                  <p style={{ fontSize: "10pt" }}>
-                    Soil dryness: {berry.soil_dryness}
-                  </p>
-                </div>
+            <div className="berry-flavors">
+              <strong>Sabores</strong>
+              <div className="detail-tags">
+                {berry.flavors.filter(({ potency }) => potency > 0).map(({ flavor, potency }) => (
+                  <span className="detail-tag" key={flavor.name}>
+                    {flavor.name} · {potency}
+                  </span>
+                ))}
+                {!berry.flavors.some(({ potency }) => potency > 0) && (
+                  <span className="muted-copy">Sem sabor predominante</span>
+                )}
               </div>
-            </CardStyled>
-          );
-        })}
-      </FlexboxStyled>
+            </div>
 
-      <ButtonStyled.Group>
+            <dl className="berry-facts">
+              <div><dt>Tempo de crescimento</dt><dd>{berry.growth_time} h</dd></div>
+              <div><dt>Colheita máxima</dt><dd>{berry.max_harvest}</dd></div>
+              <div><dt>Tamanho</dt><dd>{berry.size} mm</dd></div>
+              <div><dt>Suavidade</dt><dd>{berry.smoothness}</dd></div>
+              <div><dt>Secura do solo</dt><dd>{berry.soil_dryness}</dd></div>
+              <div><dt>Presente natural</dt><dd>{berry.natural_gift_power} · {berry.natural_gift_type.name}</dd></div>
+            </dl>
+          </article>
+        ))}
+      </section>
+
+      <nav className="page-pagination" aria-label="Paginação das berries">
         <IconButton
-          icon={HiArrowSmLeft}
+          icon={MdChevronLeft}
           disabled={!prevUrl}
           onClick={() => {
             handleChangePage(page - 1);
-            setPage((prev) => prev - 1);
+            setPage((current) => current - 1);
           }}
+          aria-label="Página anterior"
         />
-
+        <span className="pagination-page">Página {page}</span>
         <IconButton
-          icon={HiArrowSmRight}
+          icon={MdChevronRight}
           disabled={!nextUrl}
           onClick={() => {
             handleChangePage(page + 1);
-            setPage((prev) => prev + 1);
+            setPage((current) => current + 1);
           }}
+          aria-label="Próxima página"
         />
-      </ButtonStyled.Group>
-    </ScreenStyled>
+      </nav>
+    </main>
   );
 }
 

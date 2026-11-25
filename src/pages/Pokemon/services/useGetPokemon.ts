@@ -1,6 +1,6 @@
 "use server";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import requestWithCache from "@/domain/requestWithCache";
@@ -11,26 +11,41 @@ function useGetPokemon() {
   const { id } = useParams();
 
   const [pokemon, setPokemon] = useState<Pokemon>();
-
-  const handleFetchDetails = useCallback(async () => {
-    try {
-      if (!id) {
-        throw new Error("Erro: Consulta sem sucesso");
-      }
-
-      const result = await requestWithCache("/pokemon/" + id, "pokemon");
-
-      setPokemon(result);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    handleFetchDetails();
-  }, [handleFetchDetails]);
+    let isCurrentRequest = true;
+    setIsLoading(true);
+    setError("");
 
-  return { pokemon };
+    const fetchDetails = async () => {
+      try {
+        if (!id) {
+          throw new Error("Não foi informado um Pokémon para carregar.");
+        }
+
+        const result = await requestWithCache("/pokemon/" + id, "pokemon");
+
+        if (isCurrentRequest) setPokemon(result);
+      } catch (requestError) {
+        console.error(requestError);
+        if (isCurrentRequest) {
+          setPokemon(undefined);
+          setError("Não foi possível carregar os dados deste Pokémon.");
+        }
+      } finally {
+        if (isCurrentRequest) setIsLoading(false);
+      }
+    };
+
+    fetchDetails();
+    return () => {
+      isCurrentRequest = false;
+    };
+  }, [id]);
+
+  return { pokemon, isLoading, error };
 }
 
 export default useGetPokemon;
